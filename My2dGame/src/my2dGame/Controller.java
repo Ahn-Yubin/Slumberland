@@ -100,8 +100,8 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				gravity();
 				dragForce();
 				move();
-				System.out.println(model.getPlayer());
-				System.out.println((int)(1000*dt));
+				//System.out.println(model.getPlayer());
+				//System.out.println((int)(1000*dt));
 				Thread.sleep((int)(1000*dt));
 			}
 		} catch (InterruptedException e) {
@@ -134,12 +134,23 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	
 	public void jetpack() {
 		if (leftMouseClick) {
-			int mouseX = view.getMousePosition().x;
-			int mouseY = view.getMousePosition().y;
-			Vector viewCor = new Vector(mouseX, mouseY);
-			Vector worldCor = view.viewCorToWorldCor(viewCor);
-			model.getPlayer().addAcceleration(new Vector(0, g));
-			model.getPlayer().addAcceleration(worldCor.sub(model.getPlayer().getPosition()).unit().mul(350));
+			model.getPlayer().setJetpackGauge(model.getPlayer().getJetpackGauge() - 0.1);
+			if(model.getPlayer().getJetpackGauge() < 0)
+				model.getPlayer().setJetpackGauge(0);
+			if(model.getPlayer().getJetpackGauge() > 0) {
+				int mouseX = view.getMousePosition().x;
+				int mouseY = view.getMousePosition().y;
+				Vector viewCor = new Vector(mouseX, mouseY);
+				Vector worldCor = view.viewCorToWorldCor(viewCor);
+				model.getPlayer().addAcceleration(new Vector(0, g));
+				model.getPlayer().addAcceleration(worldCor.sub(model.getPlayer().getPosition()).unit().mul(350));
+			}
+		}
+		if(!leftMouseClick) {
+			if(0 <= model.getPlayer().getJetpackGauge() && model.getPlayer().getJetpackGauge() < model.getPlayer().getMaxJetpackGauge())
+				model.getPlayer().setJetpackGauge(model.getPlayer().getJetpackGauge() + 0.1);
+				if(model.getPlayer().getJetpackGauge() > model.getPlayer().getMaxJetpackGauge())
+					model.getPlayer().setJetpackGauge(model.getPlayer().getMaxJetpackGauge());
 		}
 	}
 	
@@ -175,7 +186,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 			Vector worldCor = view.viewCorToWorldCor(viewCor);
 			model.getPlayer().addPosition(worldCor.sub(model.getPlayer().getPosition()).unit().mul(50));
 			model.getPlayer().setSpeed(worldCor.sub(model.getPlayer().getPosition()).unit().mul(50));
-			
 		}
 	}
 }

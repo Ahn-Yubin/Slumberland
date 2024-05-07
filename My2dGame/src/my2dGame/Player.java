@@ -3,19 +3,25 @@ package my2dGame;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-public class Player {
+public class Player extends VisiableObject {
 	private Vector position;
 	private Vector speed;
 	private Vector acceleration;
 	
-	private boolean jetpack;
+	private boolean jetpack = false;
 	private boolean onShoot = false;
+	
+	private double maxJetpackGauge = 100;
+	private double jetpackGauge = maxJetpackGauge;
 	
 	private int maxDashCount = 6;
 	private int dashCount = maxDashCount;
 	
 	Toolkit imageTool = Toolkit.getDefaultToolkit();
 	private Image sprite = imageTool.getImage("res/img/player2.png");
+	
+	private double width;
+	private double height;
 	
 	public Player() {
 		this.position = new Vector(0, 0);
@@ -80,7 +86,7 @@ public class Player {
 	}
 	
 	//================== OnShoot ====================
-	public boolean getOnShoot() {
+	public boolean isOnShoot() {
 		return this.onShoot;
 	}
 	
@@ -89,8 +95,57 @@ public class Player {
 	}
 	
 	//================== Sprite ====================
-	public Image getSptite() {
+	public Image getSprite() {
 		return this.sprite;
+	}
+	
+	public void setSprite(Image sprite) {
+		this.sprite = sprite;
+	}
+	
+	//================== Jetpack ====================
+	public boolean isJetpack() {
+		return jetpack;
+	}
+
+	public void setJetpack(boolean jetpack) {
+		this.jetpack = jetpack;
+	}
+	
+	//================== MaxJetpackGauge ====================
+	public double getMaxJetpackGauge() {
+		return maxJetpackGauge;
+	}
+
+	public void setMaxJetpackGauge(double maxJetpackGauge) {
+		this.maxJetpackGauge = maxJetpackGauge;
+	}
+
+	//================== JetpackGauge ====================
+	public double getJetpackGauge() {
+		return jetpackGauge;
+	}
+
+	public void setJetpackGauge(double jetpackGauge) {
+		this.jetpackGauge = jetpackGauge;
+	}
+
+	//================== Width ====================
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	//================== Height ====================
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
 	}
 	
 	//==============================================
