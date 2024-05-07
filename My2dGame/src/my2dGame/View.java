@@ -108,8 +108,8 @@ public class View extends JFrame implements Runnable{
 	public void drawObject(Graphics buffG, VisiableObject obj) {
 		Vector position = obj.getPosition();
 		Image sprite = obj.getSprite(); 
-		int w = sprite.getWidth(this);
-		int h = sprite.getHeight(this);
+		double w = obj.getWidth();
+		double h = obj.getHeight();
 		Vector view_cor = worldCorToViewCor(position.sub(new Vector(w/2, -h/2)));
 		System.out.println(view_cor);
 		buffG.drawImage(sprite, (int)view_cor.getX(), (int)view_cor.getY(), (int) (w*(resolutionWidth/width)), (int)(h*(resolutionHeight/height)), this);

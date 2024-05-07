@@ -20,8 +20,8 @@ public class Player extends VisiableObject {
 	Toolkit imageTool = Toolkit.getDefaultToolkit();
 	private Image sprite = imageTool.getImage("res/img/player2.png");
 	
-	private double width;
-	private double height;
+	private double width = 50;
+	private double height = 80;
 	
 	public Player() {
 		this.position = new Vector(0, 0);
