@@ -153,11 +153,29 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	}
 	
 	public void dash() {
-		int mouseX = view.getMousePosition().x;
-		int mouseY = view.getMousePosition().y;
-		Vector viewCor = new Vector(mouseX, mouseY);
-		Vector worldCor = view.viewCorToWorldCor(viewCor);
-		model.getPlayer().addPosition(worldCor.sub(model.getPlayer().getPosition()).unit().mul(50));
-		model.getPlayer().setSpeed(worldCor.sub(model.getPlayer().getPosition()).unit().mul(50));
+		if(model.getPlayer().getDashCount() > 0) {
+			if(model.getPlayer().getDashCount() == model.getPlayer().getMaxDashCount()) {
+				new Thread() {
+					public void run() {
+						try {
+							while(model.getPlayer().getDashCount() < model.getPlayer().getMaxDashCount()) {
+								Thread.sleep(1000);
+								model.getPlayer().setDashCount(model.getPlayer().getDashCount() + 1);		
+							}
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}.start();
+			}
+			model.getPlayer().setDashCount(model.getPlayer().getDashCount() -1);
+			int mouseX = view.getMousePosition().x;
+			int mouseY = view.getMousePosition().y;
+			Vector viewCor = new Vector(mouseX, mouseY);
+			Vector worldCor = view.viewCorToWorldCor(viewCor);
+			model.getPlayer().addPosition(worldCor.sub(model.getPlayer().getPosition()).unit().mul(50));
+			model.getPlayer().setSpeed(worldCor.sub(model.getPlayer().getPosition()).unit().mul(50));
+			
+		}
 	}
 }
