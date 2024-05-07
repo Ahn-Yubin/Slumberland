@@ -11,8 +11,8 @@ public class Player {
 	private boolean jetpack;
 	private boolean onShoot = false;
 	
-	private int dashGauge;
-	private int maxDashGauge;
+	private int maxDashCount = 6;
+	private int dashCount = maxDashCount;
 	
 	Toolkit imageTool = Toolkit.getDefaultToolkit();
 	private Image sprite = imageTool.getImage("res/img/player2.png");
@@ -23,6 +23,22 @@ public class Player {
 		this.acceleration = new Vector(0, 0);
 	}
 	
+	public int getMaxDashCount() {
+		return maxDashCount;
+	}
+
+	public void setMaxDashCount(int maxDashCount) {
+		this.maxDashCount = maxDashCount;
+	}
+
+	public int getDashCount() {
+		return dashCount;
+	}
+
+	public void setDashCount(int dashCount) {
+		this.dashCount = dashCount;
+	}
+
 	//================= Position ===================
 	public Vector getPosition() {
 		return this.position;
