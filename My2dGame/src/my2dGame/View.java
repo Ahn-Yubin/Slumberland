@@ -18,6 +18,9 @@ public class View extends JFrame implements Runnable{
 	private int width = 1280;
 	private int height = 720;
 	
+	private int resolution_width = 1600;
+	private int resolution_height = 900;
+	
     public View(Model model){
         // 프레임의 대한 설정.
         setTitle("my2dGame"); // 프레임 제목 설정.
@@ -43,6 +46,7 @@ public class View extends JFrame implements Runnable{
     	Vector start = worldCorToViewCor(new Vector(0, 0));
     	Vector end = worldCorToViewCor(new Vector(width, 0));
     	buffG.drawLine((int)start.getX(), (int)start.getY(), (int)end.getX(), (int)end.getY());
+    	buffG.drawString(Integer.toString(model.getPlayer().getDashCount()), 100, 100);
         g.drawImage(buffImg, 0, 0, this); // 화면 g 에 버퍼(buffG)에 그려진 이미지(buffImg)옮김.
         repaint();
     }
