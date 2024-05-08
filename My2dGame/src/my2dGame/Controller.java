@@ -99,8 +99,11 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				jetpack();
 				gravity();
 				dragForce();
-				move();
-				//System.out.println(model.getPlayer());
+				move(model.getPlayer());
+				for(Bullet b : model.getBulletList()) {
+					move(b);
+				}
+				System.out.println(model.getPlayer());
 				//System.out.println((int)(1000*dt));
 				Thread.sleep((int)(1000*dt));
 			}
@@ -110,9 +113,9 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		}
 	}
 	
-	public void move() {
-		model.getPlayer().setPosition(model.getPlayer().getPosition().add(model.getPlayer().getSpeed().mul(dt)));
-		model.getPlayer().setSpeed(model.getPlayer().getSpeed().add(model.getPlayer().getAcceleration().mul(dt)));
+	public void move(VisiableObject obj) {
+		obj.setPosition(obj.getPosition().add(obj.getSpeed().mul(dt)));
+		obj.setSpeed(obj.getSpeed().add(obj.getAcceleration().mul(dt)));
 	}
 	
 	public void gravity() {
@@ -160,7 +163,9 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		int mouseY = view.getMousePosition().y;
 		Vector viewCor = new Vector(mouseX, mouseY);
 		Vector worldCor = view.viewCorToWorldCor(viewCor);
-		model.getPlayer().addSpeed(worldCor.sub(model.getPlayer().getPosition()).unit().mul(-300));
+		Vector dv = worldCor.sub(model.getPlayer().getPosition()).unit();
+		model.getPlayer().addSpeed(dv.mul(-300));
+		model.getBulletList().add(new Bullet(model.getPlayer().getPosition(), dv.mul(1000)));
 	}
 	
 	public void dash() {

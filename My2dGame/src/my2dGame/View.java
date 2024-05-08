@@ -51,6 +51,8 @@ public class View extends JFrame implements Runnable{
     	buffG.drawLine((int)start.getX(), (int)start.getY(), (int)end.getX(), (int)end.getY());
     	buffG.drawString(Integer.toString(model.getPlayer().getDashCount()), 100, 100);
     	
+    	drawBullet(buffG);
+    	
         g.drawImage(buffImg, 0, 0, this); // 화면 g 에 버퍼(buffG)에 그려진 이미지(buffImg)옮김.
         repaint();
     }
@@ -105,15 +107,21 @@ public class View extends JFrame implements Runnable{
     	buffG.drawOval((int)view_cor.getX()-5, (int)view_cor.getY()-5, 10, 10);
 	}
 	
+	public void drawBullet(Graphics buffG) {
+		for(Bullet b : model.getBulletList()) {
+			drawObject(buffG, b);
+		}
+	}
+	
 	public void drawObject(Graphics buffG, VisiableObject obj) {
 		Vector position = obj.getPosition();
 		Image sprite = obj.getSprite(); 
 		double w = obj.getWidth();
 		double h = obj.getHeight();
 		Vector view_cor = worldCorToViewCor(position.sub(new Vector(w/2, -h/2)));
-		System.out.println(view_cor);
+		//System.out.println(view_cor);
 		buffG.drawImage(sprite, (int)view_cor.getX(), (int)view_cor.getY(), (int) (w*(resolutionWidth/width)), (int)(h*(resolutionHeight/height)), this);
-		buffG.drawOval((int)worldCorToViewCor(position).getX()-5, (int)worldCorToViewCor(position).getY()-5, 10, 10);
+		//buffG.drawOval((int)worldCorToViewCor(position).getX()-5, (int)worldCorToViewCor(position).getY()-5, 10, 10);
 	}
 	
 	public void drawCrosshair(Graphics buffG) {
