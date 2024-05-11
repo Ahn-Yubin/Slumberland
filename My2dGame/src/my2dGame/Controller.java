@@ -103,6 +103,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				for(Bullet b : model.getBulletList()) {
 					move(b);
 				}
+				view.setPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2)));
 				System.out.println(model.getPlayer());
 				//System.out.println((int)(1000*dt));
 				Thread.sleep((int)(1000*dt));
@@ -146,7 +147,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				Vector viewCor = new Vector(mouseX, mouseY);
 				Vector worldCor = view.viewCorToWorldCor(viewCor);
 				model.getPlayer().addAcceleration(new Vector(0, g));
-				model.getPlayer().addAcceleration(worldCor.sub(model.getPlayer().getPosition()).unit().mul(350));
+				model.getPlayer().addAcceleration(worldCor.sub(model.getPlayer().getPosition()).unit().mul(1550));
 			}
 		}
 		if(!leftMouseClick) {

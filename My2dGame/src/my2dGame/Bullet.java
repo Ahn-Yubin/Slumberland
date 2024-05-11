@@ -9,7 +9,7 @@ public class Bullet extends VisiableObject {
 		this.setAcceleration(new Vector());
 		Toolkit imageTool = Toolkit.getDefaultToolkit();
 		this.setSprite(imageTool.getImage("res/img/bullet.png"));
-		this.setWidth(10);
-		this.setHeight(5);
+		this.setWidth(150);
+		this.setHeight(70);
 	}
 }
