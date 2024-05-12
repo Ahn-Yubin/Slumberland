@@ -24,25 +24,25 @@ public class View extends JFrame implements Runnable{
 	private int resolutionHeight = 900;
 	
 	public View(Model model){
-        // 프레임의 대한 설정.
-        setTitle("my2dGame"); // 프레임 제목 설정.
-        setSize(resolutionWidth, resolutionHeight); // 프레임의 크기 설정.
-        setResizable(false); // 프레임의 크기 변경 못하게 설정.
-        setVisible(true); // 프레임 보이기;
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // 프레임의 x버튼 누르면 종료;
+        // Settings for the frame.
+        setTitle("my2dGame"); // Set frame title.
+        setSize(resolutionWidth, resolutionHeight); // Set the size of the frame.
+        setResizable(false); // Set the frame size to not change.
+        setVisible(true); // Show frame
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Press the x button on the frame to end
         this.model = model;
     }
     
     @Override
     public void paint(Graphics g) {
-    	buffImg = createImage(resolutionWidth, resolutionHeight);
+    	buffImg = createImage(resolutionWidth, resolutionHeight); // create resolutionWidth X resolutionHeight empty image
     	buffG = (Graphics2D) buffImg.getGraphics();
     	update(g);
     }
     
     @Override
     public void update(Graphics g) {
-    	buffG.clearRect(0, 0, resolutionWidth, resolutionHeight); // 백지화
+    	buffG.clearRect(0, 0, resolutionWidth, resolutionHeight); // clear image
     	drawObject(buffG, model.getPlayer());
     	
     	drawCrosshair(buffG);
@@ -55,10 +55,10 @@ public class View extends JFrame implements Runnable{
     	
     	drawBullet(buffG);
     	
-        g.drawImage(buffImg, 0, 0, this); // 화면 g 에 버퍼(buffG)에 그려진 이미지(buffImg)옮김.
+        g.drawImage(buffImg, 0, 0, this); // Move the image(buffImg) drawn in the buffer(buffG) to screen g.
         repaint();
     }
-
+    
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -66,7 +66,7 @@ public class View extends JFrame implements Runnable{
 			while(true) {
 				//System.out.println("painted");
 				repaint();
-				Thread.sleep(6);
+				Thread.sleep(6); // about 144 frame
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,7 +116,7 @@ public class View extends JFrame implements Runnable{
 	      AffineTransform trans = new AffineTransform();
 	      //======================= AffineTransform =======================
 	      trans.translate(view_cor.getX(), view_cor.getY());                                                                     //S3
-	      trans.translate(-w/2, -h/2);                                                                                           //S2
+	      trans.translate(-w*(resolutionHeight/viewHeight)/2, -h*(resolutionHeight/viewHeight)/2);                                //S2
 	      trans.scale((w/sprite.getWidth(this))*(resolutionWidth/viewWidth), (h/sprite.getHeight(this))*(resolutionHeight/viewHeight));  //S1
 	      //============================================================
 	      
@@ -134,7 +134,7 @@ public class View extends JFrame implements Runnable{
 	    //======================= AffineTransform =======================
 	      trans.translate(view_cor.getX(), view_cor.getY());                                                                     //S4
 	      trans.rotate(obj.getSpeed().getX(), -obj.getSpeed().getY());                                                           //S3
-	      trans.translate(-w/2, -h/2);                                                                                           //S2
+	      trans.translate(-w*(resolutionWidth/viewWidth)/2, -h*(resolutionHeight/viewHeight)/2);                                 //S2
 	      trans.scale((w/sprite.getWidth(this))*(resolutionWidth/viewWidth), (h/sprite.getHeight(this))*(resolutionHeight/viewHeight));  //S1
 	      //============================================================
 	      
