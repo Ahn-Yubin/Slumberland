@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class Controller implements KeyListener, MouseListener, Runnable{
 	
-	private Model model;
+	private Model model; //Controller contain model, view
 	private View view;
 	
 	private int fps = 144;
@@ -37,7 +37,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println(e.getKeyChar());
-		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == false) {
+		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == false) { // if space pressed -> dash 
 			dash();
 			spaceBar = true;
 		}
@@ -46,7 +46,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == true) {
+		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == true) { // if space released
 			spaceBar = false;
 		}
 	}
@@ -91,11 +91,11 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	}
 
 	@Override
-	public void run() {
+	public void run() { // Controller's Thread
 		// TODO Auto-generated method stub
 		try {
 			while(true) {
-				model.getPlayer().setAcceleration(new Vector());
+				model.getPlayer().setAcceleration(new Vector()); // Set Player's acceleration (0, 0)
 				jetpack();
 				gravity();
 				dragForce();
@@ -103,8 +103,8 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				for(Bullet b : model.getBulletList()) {
 					move(b);
 				}
-				view.setPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2)));
-				System.out.println(model.getPlayer());
+				view.setPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
+				System.out.println(model.getPlayer()); 
 				//System.out.println((int)(1000*dt));
 				Thread.sleep((int)(1000*dt));
 			}
@@ -136,7 +136,9 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		model.getPlayer().addAcceleration(model.getPlayer().getSpeed().mul(-c * model.getPlayer().getSpeed().size()));
 	}
 	
-	public void jetpack() {
+	public void jetpack() { 
+		// Depending on whether leftMouse is pressed or not It determines the consumption and charging of the JetpackGauge 
+		// and handles exceptions to ensure that it does not deviate from the specified value and within the specified range.
 		if (leftMouseClick) {
 			model.getPlayer().setJetpackGauge(model.getPlayer().getJetpackGauge() - 0.1);
 			if(model.getPlayer().getJetpackGauge() < 0)
@@ -162,14 +164,17 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		model.getPlayer().setOnShoot(true);
 		int mouseX = view.getMousePosition().x;
 		int mouseY = view.getMousePosition().y;
+		//---------convert mouse's vector to world vector then sub Player's vector-----------
 		Vector viewCor = new Vector(mouseX, mouseY);
 		Vector worldCor = view.viewCorToWorldCor(viewCor);
 		Vector dv = worldCor.sub(model.getPlayer().getPosition()).unit();
-		model.getPlayer().addSpeed(dv.mul(-300));
+		//-----------------------------------------------------------------------------------
+		model.getPlayer().addSpeed(dv.mul(-300)); // rebound
 		model.getBulletList().add(new Bullet(model.getPlayer().getPosition(), dv.mul(1000)));
 	}
 	
 	public void dash() {
+		//Dash count charging mechanism and exception handling
 		if(model.getPlayer().getDashCount() > 0) {
 			if(model.getPlayer().getDashCount() == model.getPlayer().getMaxDashCount()) {
 				new Thread() {
