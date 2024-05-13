@@ -87,7 +87,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getButton() == MouseEvent.BUTTON1)
-			leftMouseClick = true;
+			leftMouseClick = true; 
 		if(e.getButton() == MouseEvent.BUTTON3) {
 			rightMouseClick = true;
 			shoot();
@@ -107,8 +107,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				for(Bullet b : model.getBulletList()) {
 					move(b);
 				}
-				view.setPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
-				System.out.println(model.getPlayer()); 
+				view.setViewPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
 				//System.out.println((int)(1000*dt));
 				Thread.sleep((int)(1000*dt));
 			}
@@ -173,8 +172,8 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		Vector worldCor = view.viewCorToWorldCor(viewCor);
 		Vector dv = worldCor.sub(model.getPlayer().getPosition()).unit();
 		//-----------------------------------------------------------------------------------
+		model.getBulletList().add(new Bullet(model.getPlayer().getPosition(), dv.mul(2000).add(model.getPlayer().getSpeed())));
 		model.getPlayer().addSpeed(dv.mul(-300)); // Rebound
-		model.getBulletList().add(new Bullet(model.getPlayer().getPosition(), dv.mul(1000)));
 	}
 	
 	public void dash() {
@@ -197,10 +196,25 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 			model.getPlayer().setDashCount(model.getPlayer().getDashCount() -1);
 			int mouseX = view.getMousePosition().x;
 			int mouseY = view.getMousePosition().y;
-			Vector viewCor = new Vector(mouseX, mouseY);
-			Vector worldCor = view.viewCorToWorldCor(viewCor);
-			model.getPlayer().addPosition(worldCor.sub(model.getPlayer().getPosition()).unit().mul(50));
-			model.getPlayer().setSpeed(worldCor.sub(model.getPlayer().getPosition()).unit().mul(50));
+			Vector mouseViewCor = new Vector(mouseX, mouseY);
+			Vector mouseWorldCor = view.viewCorToWorldCor(mouseViewCor);
+			
+			// Legacy dash mechanism
+			Vector ds = mouseWorldCor.sub(model.getPlayer().getPosition()).unit();
+			new Thread() {
+				public void run() {
+					try {
+						for(int i=0; i<5; i++) {
+							model.getPlayer().addPosition(ds.mul(50));
+							Thread.sleep(25);	
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}.start();
+			model.getPlayer().setSpeed(ds.mul(500));
+			System.out.println("done" + model.getPlayer() + model.getPlayer().getSpeed().size());
 		}
 	}
 }

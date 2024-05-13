@@ -3,6 +3,8 @@ package gui;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import my2dGame.Model;
+
 public abstract class GUI{
 	private double guiWidth;
 	private double guiHeight;
@@ -16,7 +18,7 @@ public abstract class GUI{
 		this.buffG = (Graphics2D) uiImage.getGraphics();
 	}
 	
-	public void updateUiImage() {
+	public void updateUiImage(Model model) {
 	}
 
 	public double getGuiWidth() {

@@ -31,7 +31,10 @@ public class Vector{
 	}
 	
 	public Vector unit() {
-		return this.mul(1/this.size());
+		double s = this.size();
+		if(s == 0)
+			return new Vector();
+		return new Vector(this.x/s, this.y/s);
 	}
 
 	public double getX() {

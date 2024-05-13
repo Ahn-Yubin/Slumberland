@@ -4,10 +4,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.Image;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import javax.swing.JFrame;
 
-import gui.DashCountGUI;
+import gui.*;
 import vector.Vector;
 import visiableObject.Bullet;
 import visiableObject.VisiableObject;
@@ -21,12 +22,13 @@ public class View extends JFrame implements Runnable{
 	Controller controller;
 	Model model;
 	
-	DashCountGUI dashCountGUI = new DashCountGUI(100, 100); 
+	DashCountGUI dashCountGUI = new DashCountGUI(10, 100);
+	JetpackGaugeGUI jetpackGaugeGUI = new JetpackGaugeGUI(10, 100);
 	
 	private Image buffImg;
     private Graphics2D buffG;
 	
-	private Vector position = new Vector(0, -100);
+	private Vector viewPosition = new Vector(0, -100);
 	private double viewWidth = 1920;
 	private double viewHeight = 1080;
 	
@@ -47,30 +49,24 @@ public class View extends JFrame implements Runnable{
     public void paint(Graphics g) {
     	buffImg = createImage(resolutionWidth, resolutionHeight); // Create resolutionWidth X resolutionHeight empty image
     	buffG = (Graphics2D) buffImg.getGraphics();
-    	update(g);
-    }
-    
-    @Override
-    public void update(Graphics g) {
     	buffG.clearRect(0, 0, resolutionWidth, resolutionHeight); // Clear image
     	drawObject(buffG, model.getMap());
     	drawObject(buffG, model.getPlayer());
-    	
+    
     	drawCrosshair(buffG);
     	
-    	buffG.drawString(Double.toString(model.getPlayer().getJetpackGauge()), 200, 200);
+    	//===== Ground ======
     	Vector start = worldCorToViewCor(new Vector(0, 0));
     	Vector end = worldCorToViewCor(new Vector(viewWidth, 0));
     	buffG.drawLine((int)start.getX(), (int)start.getY(), (int)end.getX(), (int)end.getY());
-    	buffG.drawString(Integer.toString(model.getPlayer().getDashCount()), 100, 100);
+    	//===================
     	
     	drawBullet(buffG);
     	
-    	dashCountGUI.updateUiImage(model.getPlayer().getDashCount(), model.getPlayer().getMaxDashCount());
-    	buffG.drawImage(dashCountGUI.getUiImage(), 100, 100, this);
+    	drawGUI(buffG, dashCountGUI, new Vector(resolutionWidth/2 - 100, resolutionHeight/2), 0.6f);
+    	drawGUI(buffG, jetpackGaugeGUI, new Vector(resolutionWidth/2 + 100, resolutionHeight/2), 0.6f);
     	
         g.drawImage(buffImg, 0, 0, this); // Move the image(buffImg) drawn in the buffer(buffG) to screen g.
-        repaint();
     }
     
 	@Override
@@ -88,30 +84,14 @@ public class View extends JFrame implements Runnable{
 	}
 	
 	public Vector worldCorToViewCor(Vector worldCor) {
-		Vector tmp = worldCor.sub(this.position);
+		Vector tmp = worldCor.sub(this.viewPosition);
 		return new Vector(tmp.getX() * (resolutionWidth/viewWidth), resolutionHeight - tmp.getY() * (resolutionHeight/viewHeight));
 	}
 	
 	public Vector viewCorToWorldCor(Vector viewCor) {
 		double x = viewCor.getX() * (viewWidth/resolutionWidth);
 		double y = (-viewCor.getY() + resolutionHeight) * (viewHeight/resolutionHeight);
-		return this.position.add(new Vector(x, y));
-	}
-	
-	public void drawPlayer(Graphics2D buffG) {
-		int mouseX = this.getMousePosition().x;
-		int mouseY = this.getMousePosition().y;
-		Vector mouse_position = viewCorToWorldCor(new Vector(mouseX, mouseY));
-		
-    	Vector player_position = model.getPlayer().getPosition();
-    	Vector view_cor = worldCorToViewCor(player_position);
-    	Image sprite = model.getPlayer().getSprite();
-    	int w = sprite.getWidth(rootPane);
-    	int h = sprite.getHeight(rootPane);
-    	if(player_position.sub(mouse_position).getX() < 0)
-    		w = -w;
-        buffG.drawImage(sprite, (int)view_cor.getX() - w/2 , (int)view_cor.getY() - h/2 , w, h, this); // 유저 비행기 그리기.
-    	buffG.drawOval((int)view_cor.getX()-5, (int)view_cor.getY()-5, 10, 10);
+		return this.viewPosition.add(new Vector(x, y));
 	}
 	
 	public void drawBullet(Graphics2D buffG) {
@@ -129,8 +109,8 @@ public class View extends JFrame implements Runnable{
 	      
 	      AffineTransform trans = new AffineTransform();
 	    //====================== AffineTransform ======================
-	      trans.translate(view_cor.getX(), view_cor.getY());                                                                     //S3
-	      trans.translate(-w*(resolutionHeight/viewHeight)/2, -h*(resolutionHeight/viewHeight)/2);                                //S2
+	      trans.translate(view_cor.getX(), view_cor.getY());                                                                             //S3
+	      trans.translate(-w*(resolutionHeight/viewHeight)/2, -h*(resolutionHeight/viewHeight)/2);                                       //S2
 	      trans.scale((w/sprite.getWidth(this))*(resolutionWidth/viewWidth), (h/sprite.getHeight(this))*(resolutionHeight/viewHeight));  //S1
 	      //============================================================
 	      
@@ -146,9 +126,9 @@ public class View extends JFrame implements Runnable{
 	      
 	      AffineTransform trans = new AffineTransform();
 	      //====================== AffineTransform ======================
-	      trans.translate(view_cor.getX(), view_cor.getY());                                                                     //S4
-	      trans.rotate(obj.getSpeed().getX(), -obj.getSpeed().getY());                                                           //S3
-	      trans.translate(-w*(resolutionWidth/viewWidth)/2, -h*(resolutionHeight/viewHeight)/2);                                 //S2
+	      trans.translate(view_cor.getX(), view_cor.getY());                                                                             //S4
+	      trans.rotate(obj.getSpeed().getX(), -obj.getSpeed().getY());                                                                   //S3
+	      trans.translate(-w*(resolutionWidth/viewWidth)/2, -h*(resolutionHeight/viewHeight)/2);                                         //S2
 	      trans.scale((w/sprite.getWidth(this))*(resolutionWidth/viewWidth), (h/sprite.getHeight(this))*(resolutionHeight/viewHeight));  //S1
 	      //============================================================
 	      
@@ -169,13 +149,21 @@ public class View extends JFrame implements Runnable{
 		buffG.drawLine(mouseX + length, mouseY, mouseX - length, mouseY);
 		buffG.setColor(Color.BLACK);
 	}
+	
+	public void drawGUI(Graphics2D buffG, GUI gui, Vector viewCor, float alpha) {
+		viewCor = viewCor.sub(new Vector(gui.getGuiWidth()/2 , gui.getGuiHeight()/2));
+		buffG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+		gui.updateUiImage(this.model);
+		buffG.drawImage(gui.getUiImage(), (int)viewCor.getX(), (int)viewCor.getY(), this);
+		buffG.setComposite(AlphaComposite.SrcOver);
+	}
 
-	public void setPosition(Vector position) {
-		this.position = position;
+	public void setViewPosition(Vector position) {
+		this.viewPosition = position;
 	}
 	
-	public Vector getPosition() {
-		return this.position;
+	public Vector getViewPosition() {
+		return this.viewPosition;
 	}
 	
 	public double getViewWidth() {
