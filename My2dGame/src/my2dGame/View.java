@@ -22,15 +22,15 @@ public class View extends JFrame implements Runnable{
 	Controller controller;
 	Model model;
 	
-	DashCountGUI dashCountGUI = new DashCountGUI(20, 100);
-	JetpackGaugeGUI jetpackGaugeGUI = new JetpackGaugeGUI(10, 100);
+	DashCountGUI dashCountGUI = new DashCountGUI(13, 100);
+	JetpackGaugeGUI jetpackGaugeGUI = new JetpackGaugeGUI(30, 100);
 	
 	private Image buffImg;
     private Graphics2D buffG;
 	
 	private Vector viewPosition = new Vector(0, -100);
-	private double viewWidth = 1920;
-	private double viewHeight = 1080;
+	private double viewWidth = 1600;
+	private double viewHeight = 900;
 	
 	private int resolutionWidth = 1600;
 	private int resolutionHeight = 900;
@@ -63,8 +63,8 @@ public class View extends JFrame implements Runnable{
     	
     	drawBullet(buffG);
     	
-    	drawGUI(buffG, dashCountGUI, new Vector(resolutionWidth/2 - 100, resolutionHeight/2), 0.6f);
-    	drawGUI(buffG, jetpackGaugeGUI, new Vector(resolutionWidth/2 + 100, resolutionHeight/2), 0.6f);
+    	drawGUI(buffG, dashCountGUI, new Vector(resolutionWidth/2 - 60, resolutionHeight/2), 0.6f);
+    	drawGUI(buffG, jetpackGaugeGUI, new Vector(resolutionWidth/2 + 57, resolutionHeight/2), 0.6f);
     	
         g.drawImage(buffImg, 0, 0, this); // Move the image(buffImg) drawn in the buffer(buffG) to screen g.
     }
