@@ -18,10 +18,9 @@ public class DashCountGUI extends GUI {
 	}
 
 	public void updateUiImage(Model model) {
-		/*
 		int dashCount = model.getPlayer().getDashCount();
 		int maxDashCount = model.getPlayer().getMaxDashCount();
-		
+		/*
 		if(dashCount == maxDashCount) {
 			this.getBuffG().setComposite(AlphaComposite.Clear);
 			this.getBuffG().fillRect(0, 0, (int)this.getGuiWidth(), (int)this.getGuiHeight());
@@ -41,7 +40,17 @@ public class DashCountGUI extends GUI {
 		this.getBuffG().setColor(Color.BLACK);
 		this.getBuffG().fillRect(0, 0, (int)this.getGuiWidth(), (int)this.getGuiHeight());
 		this.getBuffG().setColor(new Color(64, 64, 64));
-		int dp = 5;
+		
+		int dp = 2;
 		this.getBuffG().fillRect(dp, dp, (int)this.getGuiWidth() - 2*dp, (int)this.getGuiHeight() - 2*dp);
+		
+		double k = 0.2;
+		
+		double h = (this.getGuiHeight() - 2*dp) / (maxDashCount + k*(maxDashCount-1));
+		double a = this.getGuiHeight() - dp - h;
+		double d = -(1+k)*h;
+
+		for(int i=0; i< dashCount; i++)
+			this.getBuffG().drawImage(dashCountComponentImg, dp, (int)(a+i*d), (int)this.getGuiWidth() - 2*dp, (int)h, null);
 	}
 }
