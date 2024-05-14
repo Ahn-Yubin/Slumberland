@@ -18,8 +18,7 @@ public class Player extends VisiableObject {
 		this.setPosition(new Vector(0, 0));
 		this.setSpeed(new Vector(0, 0));
 		this.setAcceleration(new Vector(0, 0));
-		Toolkit imageTool = Toolkit.getDefaultToolkit();
-		this.setSprite(imageTool.getImage("res/img/player2.png"));
+		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/player2.png"));
 		this.setWidth(50);
 		this.setHeight(80);
 	}

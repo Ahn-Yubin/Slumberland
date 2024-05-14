@@ -22,7 +22,7 @@ public class View extends JFrame implements Runnable{
 	Controller controller;
 	Model model;
 	
-	DashCountGUI dashCountGUI = new DashCountGUI(10, 100);
+	DashCountGUI dashCountGUI = new DashCountGUI(100, 100);
 	JetpackGaugeGUI jetpackGaugeGUI = new JetpackGaugeGUI(10, 100);
 	
 	private Image buffImg;
