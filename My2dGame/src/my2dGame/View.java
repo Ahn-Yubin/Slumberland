@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.Image;
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import javax.swing.JFrame;
 
@@ -22,8 +21,8 @@ public class View extends JFrame implements Runnable{
 	Controller controller;
 	Model model;
 	
-	DashCountGUI dashCountGUI = new DashCountGUI(13, 100);
-	JetpackGaugeGUI jetpackGaugeGUI = new JetpackGaugeGUI(30, 100);
+	private DashCountGUI dashCountGUI = new DashCountGUI(10, 100);
+	private JetpackGaugeGUI jetpackGaugeGUI = new JetpackGaugeGUI(30, 120);
 	
 	private Image buffImg;
     private Graphics2D buffG;
@@ -63,8 +62,8 @@ public class View extends JFrame implements Runnable{
     	
     	drawBullet(buffG);
     	
-    	drawGUI(buffG, dashCountGUI, new Vector(resolutionWidth/2 - 60, resolutionHeight/2), 0.6f);
-    	drawGUI(buffG, jetpackGaugeGUI, new Vector(resolutionWidth/2 + 57, resolutionHeight/2), 0.6f);
+    	drawGUI(buffG, dashCountGUI, new Vector(resolutionWidth/2 - 60, resolutionHeight/2));
+    	drawGUI(buffG, jetpackGaugeGUI, new Vector(resolutionWidth/2 + 57, resolutionHeight/2));
     	
         g.drawImage(buffImg, 0, 0, this); // Move the image(buffImg) drawn in the buffer(buffG) to screen g.
     }
@@ -150,12 +149,10 @@ public class View extends JFrame implements Runnable{
 		buffG.setColor(Color.BLACK);
 	}
 	
-	public void drawGUI(Graphics2D buffG, GUI gui, Vector viewCor, float alpha) {
+	public void drawGUI(Graphics2D buffG, GUI gui, Vector viewCor) {
 		viewCor = viewCor.sub(new Vector(gui.getGuiWidth()/2 , gui.getGuiHeight()/2));
-		buffG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		gui.updateUiImage(this.model);
 		buffG.drawImage(gui.getUiImage(), (int)viewCor.getX(), (int)viewCor.getY(), this);
-		buffG.setComposite(AlphaComposite.SrcOver);
 	}
 
 	public void setViewPosition(Vector position) {
@@ -196,5 +193,21 @@ public class View extends JFrame implements Runnable{
 
 	public void setResolutionHeight(int resolutionHeight) {
 		this.resolutionHeight = resolutionHeight;
+	}
+	
+	public DashCountGUI getDashCountGUI() {
+		return dashCountGUI;
+	}
+
+	public void setDashCountGUI(DashCountGUI dashCountGUI) {
+		this.dashCountGUI = dashCountGUI;
+	}
+
+	public JetpackGaugeGUI getJetpackGaugeGUI() {
+		return jetpackGaugeGUI;
+	}
+
+	public void setJetpackGaugeGUI(JetpackGaugeGUI jetpackGaugeGUI) {
+		this.jetpackGaugeGUI = jetpackGaugeGUI;
 	}
 }

@@ -10,14 +10,16 @@ public class Player extends VisiableObject {
 	
 	private double maxJetpackGauge = 100;
 	private double jetpackGauge = maxJetpackGauge;
+	private double jetpackGaugeUsagePerSec = 20;
 	
 	private int maxDashCount = 6;
 	private int dashCount = maxDashCount;
-
+	private int dashRechargingSec = 1;
+	
 	public Player() {
-		this.setPosition(new Vector(0, 0));
-		this.setSpeed(new Vector(0, 0));
-		this.setAcceleration(new Vector(0, 0));
+		this.setPosition(new Vector(0, 0));     // m
+		this.setSpeed(new Vector(0, 0));        // m/s
+		this.setAcceleration(new Vector(0, 0)); // m/s^2
 		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/player2.png"));
 		this.setWidth(50);
 		this.setHeight(80);
@@ -82,5 +84,21 @@ public class Player extends VisiableObject {
 		out += "Speed Vector : " + this.getSpeed() + "\n";
 		out += "Accel Vector : " + this.getAcceleration() + "\n";
 		return out;
+	}
+
+	public double getJetpackGaugeUsagePerSec() {
+		return jetpackGaugeUsagePerSec;
+	}
+
+	public void setJetpackGaugeUsagePerSec(double jetpackGaugeUsagePerSec) {
+		this.jetpackGaugeUsagePerSec = jetpackGaugeUsagePerSec;
+	}
+
+	public int getDashRechargingSec() {
+		return dashRechargingSec;
+	}
+
+	public void setDashRechargingSec(int dashRechagingSec) {
+		this.dashRechargingSec = dashRechagingSec;
 	}
 }

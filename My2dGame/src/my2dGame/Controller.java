@@ -14,7 +14,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	private int fps = 144;
 	private double dt = 1.0/fps;
 	
-	private double g = 200.0;
+	private double g = 400.0;
 	
 	private boolean leftMouseClick = false;
 	private boolean rightMouseClick = false;
@@ -41,7 +41,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println(e.getKeyChar());
-		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == false) { // if space pressed -> dash 
+		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == false) { // If space pressed -> dash 
 			dash();
 			spaceBar = true;
 		}
@@ -50,7 +50,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == true) { // if space released
+		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == true) { // If space released
 			spaceBar = false;
 		}
 	}
@@ -143,7 +143,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		// Depending on whether leftMouse is pressed or not It determines the consumption and charging of the JetpackGauge 
 		// and handles exceptions to ensure that it does not deviate from the specified value and within the specified range.
 		if (leftMouseClick) {
-			model.getPlayer().setJetpackGauge(model.getPlayer().getJetpackGauge() - 0.1);
+			model.getPlayer().setJetpackGauge(model.getPlayer().getJetpackGauge() - dt*model.getPlayer().getJetpackGaugeUsagePerSec());
 			if(model.getPlayer().getJetpackGauge() < 0)
 				model.getPlayer().setJetpackGauge(0);
 			if(model.getPlayer().getJetpackGauge() > 0) {
@@ -157,7 +157,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		}
 		if(!leftMouseClick) {
 			if(0 <= model.getPlayer().getJetpackGauge() && model.getPlayer().getJetpackGauge() < model.getPlayer().getMaxJetpackGauge())
-				model.getPlayer().setJetpackGauge(model.getPlayer().getJetpackGauge() + 0.1);
+				model.getPlayer().setJetpackGauge(model.getPlayer().getJetpackGauge() + dt*model.getPlayer().getJetpackGaugeUsagePerSec()); //JetpackGauge Charging
 				if(model.getPlayer().getJetpackGauge() > model.getPlayer().getMaxJetpackGauge())
 					model.getPlayer().setJetpackGauge(model.getPlayer().getMaxJetpackGauge());
 		}
@@ -179,21 +179,30 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void dash() {
 		// Dash count charging mechanism and exception handling
 		if(model.getPlayer().getDashCount() > 0) {
-			if(model.getPlayer().getDashCount() == model.getPlayer().getMaxDashCount()) {
+			int prevDashCount = model.getPlayer().getDashCount();
+			model.getPlayer().setDashCount(model.getPlayer().getDashCount() - 1);
+			
+			// Only First
+			if(prevDashCount == model.getPlayer().getMaxDashCount() && !view.getDashCountGUI().isAlphaIncreasing()) {
 				new Thread() {
 					public void run() {
 						try {
+							view.getDashCountGUI().setAlphaIncreasing(true);
+							view.getDashCountGUI().alphaControl();
+							System.out.println("Call 대쉬 카운트 조절 메커니즘");
 							while(model.getPlayer().getDashCount() < model.getPlayer().getMaxDashCount()) {
-								Thread.sleep(1000);
+								Thread.sleep(1000*model.getPlayer().getDashRechargingSec());
 								model.getPlayer().setDashCount(model.getPlayer().getDashCount() + 1);		
 							}
+							Thread.sleep(1000);
+							view.getDashCountGUI().setAlphaIncreasing(false);
+							System.out.println("대쉬 카운트 조절 메커니즘 끝");
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
 				}.start();
 			}
-			model.getPlayer().setDashCount(model.getPlayer().getDashCount() -1);
 			int mouseX = view.getMousePosition().x;
 			int mouseY = view.getMousePosition().y;
 			Vector mouseViewCor = new Vector(mouseX, mouseY);
@@ -214,7 +223,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				}
 			}.start();
 			model.getPlayer().setSpeed(ds.mul(500));
-			System.out.println("done" + model.getPlayer() + model.getPlayer().getSpeed().size());
 		}
 	}
 }
