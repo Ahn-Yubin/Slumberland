@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import my2dGame.Model;
 
@@ -19,7 +21,7 @@ public abstract class GUI{
 	private float maxAlpha = 1.0f;
 	private float minAlpha = 1.0f;
 	
-	private boolean isAlphaIncreasing = false;
+	private List<AlphaControlThread> alphaControlThreadList;
 
 	public GUI(double guiWidth, double guiHeight) {
 		this.guiWidth = guiWidth;
@@ -29,36 +31,68 @@ public abstract class GUI{
 		
 		this.tmpUiImage = new BufferedImage((int)guiWidth, (int)guiHeight, BufferedImage.TYPE_INT_ARGB);
 		this.setTmpBuffG((Graphics2D) tmpUiImage.getGraphics());
+		
+		this.alphaControlThreadList = new ArrayList<AlphaControlThread>();
 	}
 	
 	public void updateUiImage(Model model) {
 	}
 	
-	public void alphaControl() {
-		new Thread() {
+	public void alphaControl(int state) {
+		for (AlphaControlThread alphaControlThread : this.alphaControlThreadList) {
+			  alphaControlThread.setTrigger(false);
+			  System.out.println("" + alphaControlThread.isTrigger());
+		}
+		
+		AlphaControlThread temp = new AlphaControlThread() {
 			public void run() {
 				try {
-					//System.out.println("Call 투명도 조절 메커니즘" + getAlpha());
-					while(isAlphaIncreasing()) {
+					
+					if(state == 1) {
+						while(isTrigger()) {
+							//System.out.println("알파 증가중" + getAlpha());
+							setAlpha(getAlpha() + 0.05f);
+							if(getAlpha() > getMaxAlpha()) {
+								setAlpha(getMaxAlpha());
+								break;
+							}
+							Thread.sleep(100);
+						}
+					}
+					else if(state == -1) {
+						while(isTrigger()) {
+							//System.out.println("알파 감소중" + getAlpha());
+							setAlpha(getAlpha() - 0.05f);
+							if(getAlpha() < getMinAlpha()) {
+								setAlpha(getMinAlpha());
+								break;
+							}
+							Thread.sleep(100);
+						}
+					}
+					
+					/*
+					while(isTrigger()) {
 						System.out.println("알파 증가중" + getAlpha());
 						setAlpha(getAlpha() + 0.05f);
-						if(getAlpha() > getMaxAlpha())
+						if(getAlpha() > getMaxAlpha()) {
 							setAlpha(getMaxAlpha());
+							break;
+						}
 						Thread.sleep(100);
 					}
-					while(!isAlphaIncreasing()) {
-						System.out.println("알파 감소중" + getAlpha());
-						setAlpha(getAlpha() - 0.05f);
-						if(getAlpha() < getMinAlpha())
-							setAlpha(getMinAlpha());
-						Thread.sleep(100);
-					}
+					*/
 					//System.out.println("투명도 증가 끝");
 				} catch (InterruptedException e) {
 					e. printStackTrace();
 				}
 			}
-		}.start();
+			//System.out.println("adfd" + this.isTrigger());
+		};
+		
+		temp.start();
+		this.alphaControlThreadList.add(temp);
+		System.out.println(alphaControlThreadList);
 	}
 
 	public double getGuiWidth() {
@@ -132,13 +166,16 @@ public abstract class GUI{
 	public void setMinAlpha(float minAlpha) {
 		this.minAlpha = minAlpha;
 	}
-	
-	public boolean isAlphaIncreasing() {
-		return isAlphaIncreasing;
+}
+
+class AlphaControlThread extends Thread{
+	private boolean trigger = true;
+
+	public boolean isTrigger() {
+		return trigger;
 	}
 
-	public void setAlphaIncreasing(boolean isAlphaIncreasing) {
-		this.isAlphaIncreasing = isAlphaIncreasing;
+	public void setTrigger(boolean trigger) {
+		this.trigger = trigger;
 	}
-
 }

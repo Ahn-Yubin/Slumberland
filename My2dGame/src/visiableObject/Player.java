@@ -14,7 +14,7 @@ public class Player extends VisiableObject {
 	
 	private int maxDashCount = 6;
 	private int dashCount = maxDashCount;
-	private int dashRechargingSec = 1;
+	private int dashRechargingSec = 2;
 	
 	public Player() {
 		this.setPosition(new Vector(0, 0));     // m

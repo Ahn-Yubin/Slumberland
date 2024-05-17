@@ -182,27 +182,28 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 			int prevDashCount = model.getPlayer().getDashCount();
 			model.getPlayer().setDashCount(model.getPlayer().getDashCount() - 1);
 			
+            view.getDashCountGUI().alphaControl(1);
 			// Only First
-			if(prevDashCount == model.getPlayer().getMaxDashCount() && !view.getDashCountGUI().isAlphaIncreasing()) {
-				new Thread() {
-					public void run() {
-						try {
-							view.getDashCountGUI().setAlphaIncreasing(true);
-							view.getDashCountGUI().alphaControl();
-							System.out.println("Call 대쉬 카운트 조절 메커니즘");
-							while(model.getPlayer().getDashCount() < model.getPlayer().getMaxDashCount()) {
-								Thread.sleep(1000*model.getPlayer().getDashRechargingSec());
-								model.getPlayer().setDashCount(model.getPlayer().getDashCount() + 1);		
-							}
-							Thread.sleep(1000);
-							view.getDashCountGUI().setAlphaIncreasing(false);
+	        if(prevDashCount == model.getPlayer().getMaxDashCount()) {
+	        	new Thread() {
+	        		public void run() {
+	        			try {
+		                    System.out.println("Call 대쉬 카운트 조절 메커니즘");
+
+		                    while(model.getPlayer().getDashCount() < model.getPlayer().getMaxDashCount()) {
+		                    	Thread.sleep(1000*model.getPlayer().getDashRechargingSec());
+		                        model.getPlayer().setDashCount(model.getPlayer().getDashCount() + 1);      
+		                    }
+		                    Thread.sleep(3000);
+		                    view.getDashCountGUI().alphaControl(-1);
 							System.out.println("대쉬 카운트 조절 메커니즘 끝");
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
-				}.start();
-			}
+	               }
+	        	}.start();
+	        }
+	        
 			int mouseX = view.getMousePosition().x;
 			int mouseY = view.getMousePosition().y;
 			Vector mouseViewCor = new Vector(mouseX, mouseY);
