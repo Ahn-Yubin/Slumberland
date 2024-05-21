@@ -20,8 +20,8 @@ public class Player extends PhysicalObject {
 	public Player() {
 		super();
 		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/player2.png"));
-		this.setWidth(50);
-		this.setHeight(80);
+		this.setWidth(80);
+		this.setHeight(160);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
 	}
 	
@@ -43,7 +43,6 @@ public class Player extends PhysicalObject {
 		this.dashCount = dashCount;
 	}
 
-	//================== OnShoot ====================
 	public boolean isOnShoot() {
 		return this.onShoot;
 	}
@@ -52,7 +51,6 @@ public class Player extends PhysicalObject {
 		this.onShoot = b;
 	}
 	
-	//================== Jetpack ====================
 	public boolean isJetpack() {
 		return jetpack;
 	}
@@ -61,7 +59,6 @@ public class Player extends PhysicalObject {
 		this.jetpack = jetpack;
 	}
 	
-	//================== MaxJetpackGauge ====================
 	public double getMaxJetpackGauge() {
 		return maxJetpackGauge;
 	}
@@ -70,7 +67,6 @@ public class Player extends PhysicalObject {
 		this.maxJetpackGauge = maxJetpackGauge;
 	}
 
-	//================== JetpackGauge ====================
 	public double getJetpackGauge() {
 		return jetpackGauge;
 	}
@@ -79,15 +75,6 @@ public class Player extends PhysicalObject {
 		this.jetpackGauge = jetpackGauge;
 	}
 	
-	//==============================================
-	public String toString() {
-		String out = "=========\n";
-		out += "Location Vector : " + this.getPosition() + "\n";
-		out += "Speed Vector : " + this.getSpeed() + "\n";
-		out += "Accel Vector : " + this.getAcceleration() + "\n";
-		return out;
-	}
-
 	public double getJetpackGaugeUsagePerSec() {
 		return jetpackGaugeUsagePerSec;
 	}

@@ -101,5 +101,12 @@ public abstract class PhysicalObject {
 	public void setCollider(Collider collider) {
 		this.collider = collider;
 	}
-
+	
+	public String toString() {
+		String out = "=========\n";
+		out += "Location Vector : " + this.getPosition() + "\n";
+		out += "Speed Vector : " + this.getSpeed() + "\n";
+		out += "Accel Vector : " + this.getAcceleration() + "\n";
+		return out;
+	}
 }
