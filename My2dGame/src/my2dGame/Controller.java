@@ -61,11 +61,13 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				}
 				
 				Collision coll = Collision.collisionTest(model.getPlayer().getCollider(), model.getMonster().getCollider());
+				System.out.println("" + coll.isCollision() + " " + model.getPlayer().getSpeed());
 				if(coll.isCollision()) {
-					double speedLossRate = 1.0;
+					double speedLossRate = 0.9;
 					model.getPlayer().addPosition(coll.getMinimumTranslationVector());
 					Vector axis = coll.getMinimumTranslationVector().unit();
-					model.getPlayer().addSpeed(axis.mul( -(2-speedLossRate) * model.getPlayer().getSpeed().dot(axis)));
+					if(model.getPlayer().getSpeed().dot(axis) < 0)
+						model.getPlayer().addSpeed(axis.mul( -(2-speedLossRate) * model.getPlayer().getSpeed().dot(axis)));
 				}
 				Thread.sleep((int)(1000*dt));
 			}
