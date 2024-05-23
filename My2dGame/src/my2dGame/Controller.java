@@ -15,7 +15,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	private int fps = 144;
 	private double dt = 1.0/fps;
 	
-	private double g = 980;
+	private double g = 400.0;
 	
 	private boolean leftMouseClick = false;
 	private boolean rightMouseClick = false;
@@ -27,10 +27,12 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		
 		view.addMouseListener(this);
         view.addKeyListener(this);
-        
+        /*
         Thread view_thread = new Thread(view);
         view_thread.setDaemon(true);
-        //view_thread.start();
+        view_thread.start();
+        */
+		
 	}
 	
 	@Override
@@ -43,7 +45,11 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				gravity();
 				dragForce();
 				move(model.getPlayer());
-				for(Bullet b : model.getBulletList()) {
+				Iterator<Bullet> playerBulletIterator = model.getBulletList().iterator();
+				while(playerBulletIterator.hasNext()) {
+					move(playerBulletIterator.next());
+				}
+				for(Bullet b : model.getEnemyBulletList()) {
 					move(b);
 				}
 			
@@ -53,25 +59,73 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				//System.out.println((int)(1000*dt));
 				
 				Iterator<Bullet> iter = model.getBulletList().iterator();
+				
+				
 				while(iter.hasNext()) {
-					if(Collision.collisionTest(iter.next().getCollider(), model.getMonster().getCollider()).isCollision())
-							iter.remove();
+					Bullet tmpBullet = iter.next();
+					if(Collision.collisionTest(tmpBullet.getCollider(), model.getEnemy().getCollider()).isCollision()) {
+						iter.remove();
+						model.getEnemy().setHP(model.getEnemy().getHP() - 10);
+						System.out.println("Enemy's HP :" + model.getEnemy().getHP());
+						continue;
+					}
+					 if(Collision.collisionTest(tmpBullet.getCollider(), model.getMonster().getCollider()).isCollision())
+						iter.remove();
 				}
 				
-				for(Obstacle obs : model.getObstacleList()) {
-					Collision coll = Collision.collisionTest(model.getPlayer().getCollider(), obs.getCollider());
-					//System.out.println("" + coll.isCollision() + " " + model.getPlayer().getSpeed());
-					if(coll.isCollision()) {
-						double speedLossRate = 0.5;
-						model.getPlayer().addPosition(coll.getMinimumTranslationVector());
-						Vector axis = coll.getMinimumTranslationVector().unit();
-						if(model.getPlayer().getSpeed().dot(axis) < 0)
-							model.getPlayer().addSpeed(axis.mul( -(2-speedLossRate) * model.getPlayer().getSpeed().dot(axis)));
+				for(Bullet b : model.getEnemyBulletList()) {
+					System.out.println(""+ model.getEnemyBulletList().size());
+					if(Collision.collisionTest(b.getCollider(), model.getPlayer().getCollider()).isCollision()) {
+						model.getPlayer().setHP(model.getPlayer().getHP() - 10);
+						System.out.println("Player's HP :" + model.getPlayer().getHP());
+						model.getEnemyBulletList().remove(b);
+						continue;
+					}
+					if(Collision.collisionTest(b.getCollider(), model.getMonster().getCollider()).isCollision())
+						model.getEnemyBulletList().remove(b);
+				}
+				/*
+				while(iter2.hasNext()) {
+					Bullet tmpBullet = iter2.next();
+					if(Collision.collisionTest(tmpBullet.getCollider(), model.getPlayer().getCollider()).isCollision()) {
+						model.getPlayer().setHP(model.getPlayer().getHP() - 10);
+						System.out.println("Player's HP :" + model.getPlayer().getHP());
+						//iter2.remove();
+						continue;
+					}
+					if(Collision.collisionTest(tmpBullet.getCollider(), model.getMonster().getCollider()).isCollision()) {}
+						//iter2.remove();
+				}
+				
+				*/
+				Collision coll = Collision.collisionTest(model.getPlayer().getCollider(), model.getMonster().getCollider());
+				//System.out.println("" + coll.isCollision() + " " + model.getPlayer().getSpeed());
+				if(coll.isCollision()) {
+					double speedLossRate = 0.9;
+					model.getPlayer().addPosition(coll.getMinimumTranslationVector());
+					//System.out.println("" + coll.getMinimumTranslationVector());
+					Vector axis = coll.getMinimumTranslationVector().unit();
+					if(model.getPlayer().getSpeed().dot(axis) < 0) {
+						model.getPlayer().addSpeed(axis.mul( -(2-speedLossRate) * model.getPlayer().getSpeed().dot(axis)));
 					}
 				}
-				
-				this.view.repaint();
-				
+				Collision coll2 = Collision.collisionTest(model.getPlayer().getCollider(), model.getEnemy().getCollider());
+				if(coll2.isCollision()) {
+					double speedLossRate = 0.9;
+					model.getPlayer().addPosition(coll2.getMinimumTranslationVector());
+					Vector axis = coll2.getMinimumTranslationVector().unit();
+					if(model.getPlayer().getSpeed().dot(axis) < 0)
+						model.getPlayer().addSpeed(axis.mul( -(2-speedLossRate) * model.getPlayer().getSpeed().dot(axis)));
+				}
+				Collision coll3 = Collision.collisionTest(model.getEnemy().getCollider(), model.getMonster().getCollider());
+				if(coll3.isCollision()) {
+					double speedLossRate = 0.9;
+					model.getEnemy().addPosition(coll3.getMinimumTranslationVector());
+					Vector axis = coll3.getMinimumTranslationVector().unit();
+					if(model.getEnemy().getSpeed().dot(axis) < 0)
+						model.getEnemy().addSpeed(axis.mul( -(2-speedLossRate) * model.getEnemy().getSpeed().dot(axis)));
+				}
+				view.repaint();
 				Thread.sleep((int)(1000*dt));
 			}
 		} catch (InterruptedException e) {
@@ -177,7 +231,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				Vector viewCor = new Vector(mouseX, mouseY);
 				Vector worldCor = view.viewCorToWorldCor(viewCor);
 				model.getPlayer().addAcceleration(new Vector(0, g));
-				model.getPlayer().addAcceleration(worldCor.sub(model.getPlayer().getPosition()).unit().mul(2000));
+				model.getPlayer().addAcceleration(worldCor.sub(model.getPlayer().getPosition()).unit().mul(1550));
 			}
 		}
 		if(!leftMouseClick) {
@@ -198,7 +252,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		Vector dv = worldCor.sub(model.getPlayer().getPosition()).unit();
 		//-----------------------------------------------------------------------------------
 		model.getBulletList().add(new Bullet(model.getPlayer().getPosition(), dv.mul(2000)));
-		model.getPlayer().addSpeed(dv.mul(-500)); // Rebound
+		model.getPlayer().addSpeed(dv.mul(-300)); // Rebound
 	}
 	
 	public void dash() {

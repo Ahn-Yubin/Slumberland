@@ -1,7 +1,10 @@
 package collision;
 
+import java.lang.Math;
+
 import physicalObject.PhysicalObject;
 import vector.Vector;
+
 
 public class Collider {
 	private PhysicalObject includedObject;

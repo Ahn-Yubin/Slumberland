@@ -3,6 +3,8 @@ package gui;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import my2dGame.Model;
 
@@ -15,7 +17,7 @@ public abstract class GUI{
 	
 	private float alpha = 0.0f;
 	private float maxAlpha = 1.0f;
-	private float minAlpha = 1.0f;
+	private float minAlpha = 0.0f;
 	
 	private int alphaControlCount = 0;
 	

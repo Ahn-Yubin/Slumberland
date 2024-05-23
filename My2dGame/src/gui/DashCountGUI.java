@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import my2dGame.Model;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-
 public class DashCountGUI extends GUI {
 	
 	private Image dashCountComponentImg = Toolkit.getDefaultToolkit().getImage("res/img/dashCountComponent.png");
@@ -24,8 +23,8 @@ public class DashCountGUI extends GUI {
 	public DashCountGUI(double guiWidth, double guiHeight) {
 		// TODO Auto-generated constructor stub
 		super(guiWidth, guiHeight);
-		setMaxAlpha(0.7f);
-		setMinAlpha(0.3f);
+		setMaxAlpha(1.0f);
+		setMinAlpha(0.0f);
 		setAlpha(getMinAlpha());
 		this.tmpUiImage = new BufferedImage((int)guiWidth, (int)guiHeight, BufferedImage.TYPE_INT_ARGB);
 		this.tmpBuffG = (Graphics2D) tmpUiImage.getGraphics();
