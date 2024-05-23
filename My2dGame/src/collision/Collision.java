@@ -39,11 +39,11 @@ public class Collision {
 		
 		Vector SA = separatingAxis[0];
 		
-		double RwhenR0IsMin = (col1.getIncludedObject().getPosition().sub(col2.getIncludedObject().getPosition())).dot(SA); 
-		double minimumR0 = Math.abs(RwhenR0IsMin); 
+		double RwhenR0IsMin = 0;
+		double minimumR0 = Double.MAX_VALUE; 
 		Vector axisWhenR0IsMin = SA;
 		
-		for(int i=1; i<4; i++) {
+		for(int i=0; i<4; i++) {
 			SA = separatingAxis[i];
 			R = (col1.getIncludedObject().getPosition().sub(col2.getIncludedObject().getPosition())).dot(SA);
 			r0 = Math.abs(R);
@@ -56,6 +56,7 @@ public class Collision {
 			
 			if(minimumR0 > (r1+r2-r0)) {
 				minimumR0 = (r1+r2-r0);
+				//System.out.println(""+minimumR0);
 				RwhenR0IsMin = R;
 				axisWhenR0IsMin = SA;
 			}
