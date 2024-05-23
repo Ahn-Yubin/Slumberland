@@ -14,7 +14,7 @@ public class Map extends PhysicalObject {
 		this.setSpeed(new Vector(0, 0));
 		this.setAcceleration(new Vector(0, 0));
 		Toolkit imageTool = Toolkit.getDefaultToolkit();
-		this.setSprite(imageTool.getImage("res/img/map.png"));
+		this.setSprite(imageTool.getImage("res/img/map.jpg"));
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
 	}
 }

@@ -17,11 +17,16 @@ public class Player extends PhysicalObject {
 	private int dashCount = maxDashCount;
 	private int dashRechargingSec = 2;
 	
+	private int Life = 3;
+	private int maxHP = 100;
+	private int HP = 100;
+	private int attackDamage = 10;
+	
 	public Player() {
 		super();
 		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/player2.png"));
-		this.setWidth(80);
-		this.setHeight(160);
+		this.setWidth(50);
+		this.setHeight(80);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
 	}
 	
@@ -43,6 +48,7 @@ public class Player extends PhysicalObject {
 		this.dashCount = dashCount;
 	}
 
+	//================== OnShoot ====================
 	public boolean isOnShoot() {
 		return this.onShoot;
 	}
@@ -51,6 +57,7 @@ public class Player extends PhysicalObject {
 		this.onShoot = b;
 	}
 	
+	//================== Jetpack ====================
 	public boolean isJetpack() {
 		return jetpack;
 	}
@@ -59,6 +66,7 @@ public class Player extends PhysicalObject {
 		this.jetpack = jetpack;
 	}
 	
+	//================== MaxJetpackGauge ====================
 	public double getMaxJetpackGauge() {
 		return maxJetpackGauge;
 	}
@@ -67,6 +75,7 @@ public class Player extends PhysicalObject {
 		this.maxJetpackGauge = maxJetpackGauge;
 	}
 
+	//================== JetpackGauge ====================
 	public double getJetpackGauge() {
 		return jetpackGauge;
 	}
@@ -75,6 +84,15 @@ public class Player extends PhysicalObject {
 		this.jetpackGauge = jetpackGauge;
 	}
 	
+	//==============================================
+	public String toString() {
+		String out = "=========\n";
+		out += "Location Vector : " + this.getPosition() + "\n";
+		out += "Speed Vector : " + this.getSpeed() + "\n";
+		out += "Accel Vector : " + this.getAcceleration() + "\n";
+		return out;
+	}
+
 	public double getJetpackGaugeUsagePerSec() {
 		return jetpackGaugeUsagePerSec;
 	}
@@ -90,4 +108,39 @@ public class Player extends PhysicalObject {
 	public void setDashRechargingSec(int dashRechagingSec) {
 		this.dashRechargingSec = dashRechagingSec;
 	}
+
+	public int getLife() {
+		return Life;
+	}
+
+	public void setLife(int life) {
+		Life = life;
+	}
+
+	public int getHP() {
+		return HP;
+	}
+
+	public void setHP(int hP) {
+		HP = hP;
+		if(HP>maxHP)
+			HP = maxHP;
+	}
+
+	public int getAttackDamage() {
+		return attackDamage;
+	}
+
+	public void setAttackDamage(int attackDamage) {
+		this.attackDamage = attackDamage;
+	}
+
+	public int getMaxHP() {
+		return maxHP;
+	}
+
+	public void setMaxHP(int maxHP) {
+		this.maxHP = maxHP;
+	}
+	
 }
