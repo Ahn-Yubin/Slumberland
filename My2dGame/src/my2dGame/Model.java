@@ -15,6 +15,8 @@ public class Model {
 	private Map map;
 	private Enemy enemy;
 	private List<Bullet> enemyBulletList;
+	private List<Monster> monsterList;
+
 	public Model() {
 		this.player = new Player();
 		this.player.setPosition(new Vector(100, 250));
@@ -22,11 +24,19 @@ public class Model {
 		this.monster = new Monster();
 		this.monster.setPosition(new Vector(250, 0));
 		
-		this.bulletList = new ArrayList<Bullet>();
+		this.bulletList = new CopyOnWriteArrayList<Bullet>();
 		this.enemyBulletList = new CopyOnWriteArrayList<Bullet>();
 		this.map = new Map();
 		
 		this.enemy = new Enemy(this);
+		this.enemy.setPosition(new Vector(250, 1000));
+		this.monsterList = new CopyOnWriteArrayList<Monster>();
+		this.monsterList.add(new Monster(new Vector(250.000000, 250.000000), 500.000000, 100.000000));
+		this.monsterList.add(new Monster(new Vector(50.000000, 100.000000), 100.000000, 200.000000));
+		this.monsterList.add(new Monster(new Vector(250.000000, 100.000000), 100.000000, 200.000000));
+		this.monsterList.add(new Monster(new Vector(450.000000, 100.000000), 100.000000, 200.000000));
+		this.monsterList.add(new Monster(new Vector(150.000000, 50.000000), 100.000000, 100.000000));
+
 	}
 
 	public List<Bullet> getEnemyBulletList() {
@@ -59,5 +69,12 @@ public class Model {
 
 	public Monster getMonster() {
 		return monster;
+	}
+	public List<Monster> getMonsterList() {
+		return monsterList;
+	}
+
+	public void setMonsterList(List<Monster> monsterList) {
+		this.monsterList = monsterList;
 	}
 }

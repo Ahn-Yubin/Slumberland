@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 
 import gui.*;
 import physicalObject.Bullet;
+import physicalObject.Monster;
 import physicalObject.PhysicalObject;
 import vector.Vector;
 
@@ -55,10 +56,12 @@ public class View extends JFrame implements Runnable{
     	buffG.clearRect(0, 0, resolutionWidth, resolutionHeight); // Clear image
     	drawObject(buffG, model.getMap());
     	drawObject(buffG, model.getPlayer());
-    	drawObject(buffG, model.getMonster());
-    	drawObject(buffG, model.getEnemy());
+    	//drawObject(buffG, model.getMonster());
+    	//drawObject(buffG, model.getEnemy());
     	drawCrosshair(buffG);
-    	
+    	for(Monster m: model.getMonsterList()) {
+    		drawObject(buffG, m);
+    	}
     	//===== Ground ======
     	//Vector start = worldCorToViewCor(new Vector(0, 0));
     	//Vector end = worldCorToViewCor(new Vector(viewWidth, 0));
@@ -105,7 +108,6 @@ public class View extends JFrame implements Runnable{
 		for(Bullet b: model.getEnemyBulletList()) {
 			drawObject(buffG, b);
 		}
-		
 	}
 	
 	public void drawObject(Graphics2D buffG, PhysicalObject obj) {
@@ -124,7 +126,7 @@ public class View extends JFrame implements Runnable{
 	      //============================================================
 	      buffG.drawImage(sprite, trans, this);
 	      
-	      boolean onHitbox = true;
+	      boolean onHitbox = false;
 	      if(onHitbox) {
 		      Vector[] temp = obj.getCollider().getRotatedNormal();
 		      Vector x0 = worldCorToViewCor(position.sub(temp[0]).add(temp[1]));
