@@ -45,34 +45,29 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				gravity();
 				dragForce();
 				move(model.getPlayer());
-				Iterator<Bullet> playerBulletIterator = model.getBulletList().iterator();
-				while(playerBulletIterator.hasNext()) {
-					move(playerBulletIterator.next());
+				move(model.getEnemy());
+				for(Bullet b : model.getBulletList()) {
+					move(b);
 				}
 				for(Bullet b : model.getEnemyBulletList()) {
 					move(b);
 				}
 			
-				//model.getMonster().setDirection(model.getMonster().getDirection().add(model.getMonster().getDirection().normal().unit().mul(0.3*dt)));
+				model.getMonster().setDirection(model.getMonster().getDirection().add(model.getMonster().getDirection().normal().unit().mul(0.3*dt)));
 				
 				view.setViewPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
 				//System.out.println((int)(1000*dt));
 				
-				Iterator<Bullet> iter = model.getBulletList().iterator();
-				
-				
-				while(iter.hasNext()) {
-					Bullet tmpBullet = iter.next();
-					if(Collision.collisionTest(tmpBullet.getCollider(), model.getEnemy().getCollider()).isCollision()) {
-						iter.remove();
+				for(Bullet b: model.getBulletList()) {
+					if(Collision.collisionTest(b.getCollider(), model.getEnemy().getCollider()).isCollision()) {
 						model.getEnemy().setHP(model.getEnemy().getHP() - 10);
 						System.out.println("Enemy's HP :" + model.getEnemy().getHP());
+						model.getBulletList().remove(b);
 						continue;
 					}
-					 if(Collision.collisionTest(tmpBullet.getCollider(), model.getMonster().getCollider()).isCollision())
-						iter.remove();
+					if(Collision.collisionTest(b.getCollider(), model.getMonster().getCollider()).isCollision())
+						model.getBulletList().remove(b);
 				}
-				
 				for(Bullet b : model.getEnemyBulletList()) {
 					System.out.println(""+ model.getEnemyBulletList().size());
 					if(Collision.collisionTest(b.getCollider(), model.getPlayer().getCollider()).isCollision()) {
@@ -84,20 +79,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 					if(Collision.collisionTest(b.getCollider(), model.getMonster().getCollider()).isCollision())
 						model.getEnemyBulletList().remove(b);
 				}
-				/*
-				while(iter2.hasNext()) {
-					Bullet tmpBullet = iter2.next();
-					if(Collision.collisionTest(tmpBullet.getCollider(), model.getPlayer().getCollider()).isCollision()) {
-						model.getPlayer().setHP(model.getPlayer().getHP() - 10);
-						System.out.println("Player's HP :" + model.getPlayer().getHP());
-						//iter2.remove();
-						continue;
-					}
-					if(Collision.collisionTest(tmpBullet.getCollider(), model.getMonster().getCollider()).isCollision()) {}
-						//iter2.remove();
-				}
-				
-				*/
 				Collision coll = Collision.collisionTest(model.getPlayer().getCollider(), model.getMonster().getCollider());
 				//System.out.println("" + coll.isCollision() + " " + model.getPlayer().getSpeed());
 				if(coll.isCollision()) {
