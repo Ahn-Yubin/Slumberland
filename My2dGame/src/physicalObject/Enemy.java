@@ -8,8 +8,7 @@ import vector.Vector;
 
 
 public class Enemy extends Entity {
-	private int HP = 100;
-	private int maxHP = 100;
+	
 	private double attackBoundary = 700;
 	private Model model;
 	
@@ -17,9 +16,9 @@ public class Enemy extends Entity {
 		super();
 		this.model = model;
 		this.setPosition(position);
-		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/tempEmemy.png"));
-		this.setWidth(50);
-		this.setHeight(80);
+		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/adf.png"));
+		this.setWidth(100);
+		this.setHeight(160);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
 		this.simpleAI();
 		this.moveAI();
@@ -47,21 +46,19 @@ public class Enemy extends Entity {
 		new Thread() {
 			public void run() {
 				while(true) {
-					setAcceleration(new Vector(0, 0));
-					gravity();
-					System.out.println("중력");
-					//dragForce();
-					//move();
-					if(HP == 0) {
+					move();
+					if(getHP() == 0) {
 						model.getEnemyList().remove(getThis());
+					}
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 			}
 		}.start();
-	}
-	
-	public void die() {
-		model.getEnemyList().remove(this);
 	}
 	
 	public void shoot() {
@@ -73,7 +70,7 @@ public class Enemy extends Entity {
 	
 	public void move() {
 		Vector v = model.getPlayer().getPosition().sub(getPosition()).unit();
-		if(HP < maxHP) {
+		if(this.getHP() < this.getMaxHP()) {
 			this.getSpeed().setX(v.getX() * 100);
 		}
 		if(model.getPlayer().isOnShoot()) {
@@ -82,31 +79,6 @@ public class Enemy extends Entity {
 		}
 	}
 	
-	public void gravity() {
-		if (getPosition().getY() >= 0) {
-			//System.out.println("gravity");
-			addAcceleration(new Vector(0, -400));
-		}
-		else {
-			getPosition().setY(0);
-			getSpeed().setY(0);
-			//model.getPlayer().getAcceleration().setY(0);
-		}
-	}
-	
-	public void dragForce() {
-		double c = 0.001;
-		this.addAcceleration(this.getSpeed().mul(-c * this.getSpeed().size()));
-	}
-	
-	public int getHP() {
-		return HP;
-	}
-	
-	public void setHP(int hP) {
-		HP = hP;
-	}
-
 	public Enemy getThis() {
 		return this;
 	}

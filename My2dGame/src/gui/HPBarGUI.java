@@ -25,7 +25,7 @@ public class HPBarGUI extends GUI {
 		// TODO Auto-generated constructor stub
 		super(guiWidth, guiHeight);
 		setMaxAlpha(0.8f);
-		setMinAlpha(0.3f);
+		setMinAlpha(0.5f);
 		setAlpha(getMinAlpha());
 		this.tmpUiImage = new BufferedImage((int)guiWidth, (int)guiHeight, BufferedImage.TYPE_INT_ARGB);
 		this.tmpBuffG = (Graphics2D) tmpUiImage.getGraphics();

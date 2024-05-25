@@ -29,8 +29,6 @@ public abstract class PhysicalObject {
 		this.setMass(1.0);
 	}
 	
-	public void whenCollision(PhysicalObject obj) {}
-	
 	public Image getSprite() {
 		return sprite;
 	}

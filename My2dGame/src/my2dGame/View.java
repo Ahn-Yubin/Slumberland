@@ -28,8 +28,8 @@ public class View extends JFrame implements Runnable{
     private Graphics2D buffG;
 
 	private Vector viewPosition = new Vector(0, -100);
-	private double viewWidth = 5000;
-	private double viewHeight = 2500;
+	private double viewWidth = 3200;
+	private double viewHeight = 1800;
 	
 	private int resolutionWidth = 1600;
 	private int resolutionHeight = 900;

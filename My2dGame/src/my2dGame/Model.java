@@ -26,23 +26,37 @@ public class Model {
 		
 		this.enemyList = new CopyOnWriteArrayList<Enemy>();
 		
-		this.enemyList.add(new Enemy(this, new Vector(800 + Math.random()*800, 1000 + Math.random()*1000)));
-		/*
-		for(int i=0; i<40; i++)
+		//this.enemyList.add(new Enemy(this, new Vector(800 + Math.random()*800, 1000 + Math.random()*1000)));
+		for(int i=0; i<10; i++)
 			this.enemyList.add(new Enemy(this, new Vector(Math.random()*6000, 1000 + Math.random()*1000)));
-		*/
 		
 		this.obstacleList = new CopyOnWriteArrayList<Obstacle>();
-		this.obstacleList.add(new Obstacle(new Vector(25000.000000, 9750.000000), 50000.000000, 500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(250.000000, 4750.000000), 500.000000, 9500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(19500.000000, 7250.000000), 6000.000000, 4500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(49750.000000, 4750.000000), 500.000000, 9500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(34250.000000, 3250.000000), 5500.000000, 6500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(46750.000000, 3250.000000), 5500.000000, 6500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(9500.000000, 2250.000000), 6000.000000, 4500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(40500.000000, 2250.000000), 7000.000000, 4500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(3500.000000, 250.000000), 6000.000000, 500.000000));
-		this.obstacleList.add(new Obstacle(new Vector(22000.000000, 250.000000), 19000.000000, 500.000000));
+		this.obstacleList.add(new Obstacle(new Vector(7500.000000, 4512.500000), 15000.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(1500.000000, 4037.500000), 3000.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(7875.000000, 4037.500000), 2250.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(12000.000000, 4037.500000), 3000.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(14625.000000, 2137.500000), 750.000000, 4275.000000));
+		this.obstacleList.add(new Obstacle(new Vector(375.000000, 1900.000000), 750.000000, 3800.000000));
+		this.obstacleList.add(new Obstacle(new Vector(4125.000000, 3087.500000), 750.000000, 1425.000000));
+		this.obstacleList.add(new Obstacle(new Vector(9000.000000, 3562.500000), 1500.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(3375.000000, 2375.000000), 750.000000, 1900.000000));
+		this.obstacleList.add(new Obstacle(new Vector(4875.000000, 2850.000000), 750.000000, 950.000000));
+		this.obstacleList.add(new Obstacle(new Vector(1875.000000, 2612.500000), 2250.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(8625.000000, 2612.500000), 6750.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(13875.000000, 2612.500000), 750.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(7500.000000, 2137.500000), 1500.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(11625.000000, 2137.500000), 750.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(7875.000000, 1662.500000), 750.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(1875.000000, 712.500000), 750.000000, 1425.000000));
+		this.obstacleList.add(new Obstacle(new Vector(5625.000000, 712.500000), 750.000000, 1425.000000));
+		this.obstacleList.add(new Obstacle(new Vector(10500.000000, 1187.500000), 1500.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(13500.000000, 712.500000), 1500.000000, 1425.000000));
+		this.obstacleList.add(new Obstacle(new Vector(4875.000000, 475.000000), 750.000000, 950.000000));
+		this.obstacleList.add(new Obstacle(new Vector(7125.000000, 475.000000), 750.000000, 950.000000));
+		this.obstacleList.add(new Obstacle(new Vector(1125.000000, 237.500000), 750.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(3375.000000, 237.500000), 2250.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(6375.000000, 237.500000), 750.000000, 475.000000));
+		this.obstacleList.add(new Obstacle(new Vector(10125.000000, 237.500000), 5250.000000, 475.000000));
 	}
 
 	public List<EnemyBullet> getEnemyBulletList() {

@@ -13,8 +13,8 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 
 	private int fps = 144;
 	private double dt = 1.0/fps;
-
-	private double g = 400.0;
+	
+	private double g = 980.0;
 
 	private boolean leftMouseClick = false;
 	private boolean rightMouseClick = false;
@@ -39,13 +39,24 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		// TODO Auto-generated method stub
 		try {
 			while(true) {
-				model.getPlayer().setAcceleration(new Vector()); // Set Player's acceleration (0, 0)
+				applyNetForce(model.getPlayer());
 				jetpack();
-				gravity();
-				dragForce();
 				move(model.getPlayer());
-				for(Enemy en : model.getEnemyList()) {
-					move(en);
+				
+				//model.getMap().setPosition(model.getPlayer().getPosition());
+				model.getMap().setSpeed(model.getPlayer().getSpeed().mul(0.8));
+				move(model.getMap());
+				
+				for(Enemy e : model.getEnemyList()) {
+					applyNetForce(e);
+					move(e);
+				}
+				
+				for(Obstacle o : model.getObstacleList()) {
+					collisionEffect(o, model.getPlayer());
+					for(Enemy en : model.getEnemyList()) {
+						collisionEffect(o, en);
+					}
 				}
 				
 				for(PlayerBullet pb : model.getPlayerBulletList()) {
@@ -56,31 +67,41 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 						collisionEffect(pb, o);
 				}
 
-				for(EnemyBullet mb : model.getEnemyBulletList()) {
-					move(mb);
-					collisionEffect(mb, model.getPlayer());
+				for(EnemyBullet eb : model.getEnemyBulletList()) {
+					move(eb);
+					collisionEffect(eb, model.getPlayer());
 					for(Obstacle o : model.getObstacleList())
-						collisionEffect(mb, o);
+						collisionEffect(eb, o);
 					for(PlayerBullet pb : model.getPlayerBulletList())
-						collisionEffect(mb, pb);
+						collisionEffect(eb, pb);
 				}
 
-				for(Obstacle o : model.getObstacleList()) {
-					collisionEffect(o, model.getPlayer());
-					for(Enemy en : model.getEnemyList()) {
-						collisionEffect(o, en);
-					}
-				}
+				
 				
 				view.setViewPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
 				
 				view.repaint();
+				
 				Thread.sleep((int)(1000*dt));
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void applyNetForce(PhysicalObject obj) {
+		obj.setAcceleration(new Vector());
+		gravity(obj);
+		dragForce(obj);
+	}
+	
+	public void gravity(PhysicalObject obj) {
+		obj.addAcceleration(new Vector(0, -g));
+	}
+
+	public void dragForce(PhysicalObject obj) {
+		double c = 0.001;
+		obj.addAcceleration(obj.getSpeed().mul(-c * obj.getSpeed().size()));
 	}
 
 	@Override
@@ -149,24 +170,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		obj.setPosition(obj.getPosition().add(obj.getSpeed().mul(dt)));
 		obj.setSpeed(obj.getSpeed().add(obj.getAcceleration().mul(dt)));
 	}
-
-	public void gravity() {
-		if (model.getPlayer().getPosition().getY() >= 0) {
-			//System.out.println("gravity");
-			model.getPlayer().addAcceleration(new Vector(0, -g));
-		}
-		else {
-			model.getPlayer().getPosition().setY(0);
-			model.getPlayer().getSpeed().setY(0);
-			//model.getPlayer().getAcceleration().setY(0);
-		}
-	}
-
-	public void dragForce() {
-		double c = 0.001;
-		model.getPlayer().addAcceleration(model.getPlayer().getSpeed().mul(-c * model.getPlayer().getSpeed().size()));
-	}
-
+	
 	public void jetpack() { 
 		// Depending on whether leftMouse is pressed or not It determines the consumption and charging of the JetpackGauge 
 		// and handles exceptions to ensure that it does not deviate from the specified value and within the specified range.
@@ -180,7 +184,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				Vector viewCor = new Vector(mouseX, mouseY);
 				Vector worldCor = view.viewCorToWorldCor(viewCor);
 				model.getPlayer().addAcceleration(new Vector(0, g));
-				model.getPlayer().addAcceleration(worldCor.sub(model.getPlayer().getPosition()).unit().mul(1550));
+				model.getPlayer().addAcceleration(worldCor.sub(model.getPlayer().getPosition()).unit().mul(8000));
 			}
 		}
 		if(!leftMouseClick) {
@@ -335,6 +339,9 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	}
 	
 	public void collisionEffect(EnemyBullet eB, PlayerBullet pB) {
-
+		Collision coll = Collision.collisionTest(eB.getCollider(), pB.getCollider());
+		if(coll.isCollision()) {
+			model.getEnemyBulletList().remove(eB);
+		}	
 	}
 }
