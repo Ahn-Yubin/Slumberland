@@ -17,6 +17,8 @@ public abstract class PhysicalObject {
 	private double width;
 	private double height;
 	
+	private double mass;
+	
 	private Collider collider;
 	
 	public PhysicalObject() {
@@ -24,6 +26,7 @@ public abstract class PhysicalObject {
 		this.setSpeed(new Vector(0, 0));        // m/s
 		this.setAcceleration(new Vector(0, 0)); // m/s^2
 		this.setDirection(new Vector(1, 0));
+		this.setMass(1.0);
 	}
 	
 	public Image getSprite() {
@@ -100,6 +103,14 @@ public abstract class PhysicalObject {
 
 	public void setCollider(Collider collider) {
 		this.collider = collider;
+	}
+
+	public double getMass() {
+		return mass;
+	}
+
+	public void setMass(double mass) {
+		this.mass = mass;
 	}
 
 }

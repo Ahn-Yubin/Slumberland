@@ -23,14 +23,14 @@ public class Model {
 		this.map = new Map();
 		
 		this.enemy = new Enemy(this);
-		this.enemy.setPosition(new Vector(250, 1000));
+		this.enemy.setPosition(new Vector(250, 500));
+		
 		this.obstacleList = new CopyOnWriteArrayList<Obstacle>();
 		this.obstacleList.add(new Obstacle(new Vector(250.000000, 250.000000), 500.000000, 100.000000));
 		this.obstacleList.add(new Obstacle(new Vector(50.000000, 100.000000), 100.000000, 200.000000));
 		this.obstacleList.add(new Obstacle(new Vector(250.000000, 100.000000), 100.000000, 200.000000));
 		this.obstacleList.add(new Obstacle(new Vector(450.000000, 100.000000), 100.000000, 200.000000));
 		this.obstacleList.add(new Obstacle(new Vector(150.000000, 50.000000), 100.000000, 100.000000));
-
 	}
 
 	public List<Bullet> getEnemyBulletList() {

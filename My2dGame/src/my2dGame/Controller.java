@@ -45,6 +45,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				dragForce();
 				move(model.getPlayer());
 				move(model.getEnemy());
+				
 				for(Bullet b : model.getBulletList()) {
 					move(b);
 				}
@@ -56,30 +57,21 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				view.setViewPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
 				//System.out.println((int)(1000*dt));
 				
-				for(Bullet b: model.getBulletList()) {
-					if(Collision.collisionTest(b.getCollider(), model.getEnemy().getCollider()).isCollision()) {
-						model.getEnemy().setHP(model.getEnemy().getHP() - 10);
-						System.out.println("Enemy's HP :" + model.getEnemy().getHP());
-						model.getBulletList().remove(b);
-						continue;
-					}
-				
-				}
-				for(Bullet b : model.getEnemyBulletList()) {
-					System.out.println(""+ model.getEnemyBulletList().size());
-					if(Collision.collisionTest(b.getCollider(), model.getPlayer().getCollider()).isCollision()) {
-						model.getPlayer().setHP(model.getPlayer().getHP() - 10);
-						System.out.println("Player's HP :" + model.getPlayer().getHP());
-						model.getEnemyBulletList().remove(b);
-						continue;
-					}
-				}
 				//System.out.println("" + coll.isCollision() + " " + model.getPlayer().getSpeed());
 				Collision coll2 = Collision.collisionTest(model.getPlayer().getCollider(), model.getEnemy().getCollider());
 				if(coll2.isCollision()) {
+					
+					System.out.println("=========넘어온거============");
+					System.out.println("tv1 = " + coll2.getTranslationVector1());
+					System.out.println("tv2 = " + coll2.getTranslationVector2());
+					System.out.println("=====================");
+					
+					
+					model.getPlayer().addPosition(coll2.getTranslationVector1());
+					model.getEnemy().addPosition(coll2.getTranslationVector2());
+					
+					Vector axis = coll2.getTranslationVector1().unit();
 					double speedLossRate = 0.9;
-					model.getPlayer().addPosition(coll2.getMinimumTranslationVector());
-					Vector axis = coll2.getMinimumTranslationVector().unit();
 					if(model.getPlayer().getSpeed().dot(axis) < 0)
 						model.getPlayer().addSpeed(axis.mul( -(2-speedLossRate) * model.getPlayer().getSpeed().dot(axis)));
 				}

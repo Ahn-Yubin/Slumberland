@@ -20,7 +20,8 @@ public class Enemy extends PhysicalObject {
 		this.setHeight(80);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
 		this.simpleAI();
-		this.moveAI();
+		//this.moveAI();
+		this.setMass(2.0);
 	}
 	
 	private void simpleAI() {
@@ -60,11 +61,11 @@ public class Enemy extends PhysicalObject {
 	
 	public void move() {
 		Vector v = getPlayer().getPosition().sub(getPosition()).unit();
-		if(HP<maxHP) {
+		if(HP < maxHP) {
 			this.getSpeed().setX(v.getX() * 100);
 		}
 		if(player.isOnShoot()) {
-			System.out.println("working");
+			//System.out.println("working");
 			addSpeed(new Vector(0, 0.001));
 		}
 	}

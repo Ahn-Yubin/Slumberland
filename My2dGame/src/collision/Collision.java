@@ -5,11 +5,13 @@ import java.lang.Math;
 
 public class Collision {
 	private boolean isCollision;
-	private Vector minimumTranslationVector;
+	private Vector translationVector1;
+	private Vector translationVector2;
 	
-	public Collision(boolean isCollision, Vector MTV) {
+	public Collision(boolean isCollision, Vector TV1, Vector TV2) {
 		this.isCollision = isCollision;
-		this.minimumTranslationVector = MTV;
+		this.translationVector1 = TV1;
+		this.translationVector2 = TV2;
 	}
 
 	public boolean isCollision() {
@@ -20,14 +22,21 @@ public class Collision {
 		this.isCollision = isCollision;
 	}
 
-	public Vector getMinimumTranslationVector() {
-		return minimumTranslationVector;
+	public Vector getTranslationVector1() {
+		return translationVector1;
 	}
 
-	public void setMinimumTranslationVector(Vector minimumTranslationVector) {
-		this.minimumTranslationVector = minimumTranslationVector;
+	public void setTranslationVector1(Vector translationVector1) {
+		this.translationVector1 = translationVector1;
 	}
 
+	public Vector getTranslationVector2() {
+		return translationVector2;
+	}
+
+	public void setTranslationVector2(Vector translationVector2) {
+		this.translationVector2 = translationVector2;
+	}
 
 	public static Collision collisionTest(Collider col1, Collider col2) {
 		Vector[] myRotatedNormal = col1.getRotatedNormal();
@@ -52,7 +61,7 @@ public class Collision {
 			r2 = Math.abs(othersRotatedNormal[0].dot(SA)) + Math.abs(othersRotatedNormal[1].dot(SA));
 			
 			if(r0 > r1 + r2)
-				return new Collision(false, new Vector());
+				return new Collision(false, new Vector(), new Vector());
 			
 			if(minimumR0 > (r1+r2-r0)) {
 				minimumR0 = (r1+r2-r0);
@@ -65,6 +74,18 @@ public class Collision {
 		if(RwhenR0IsMin < 0)
 			minimumR0 = -minimumR0;
 		
-		return new Collision(true, axisWhenR0IsMin.mul(minimumR0));
+		Vector MTV = axisWhenR0IsMin.mul(minimumR0);
+		double m1 = col1.getIncludedObject().getMass();
+		double m2 = col2.getIncludedObject().getMass();
+		if(m1 < 0)
+			return new Collision(true, new Vector(), MTV.mul(-1));
+		if(m2 < 0)
+			return new Collision(true, MTV, new Vector());
+		System.out.println("=========계산된거============");
+		System.out.println("MTV = " + MTV);
+		System.out.println("tv1 = " + MTV.mul(m2/(m1+m2)));
+		System.out.println("tv2 = " + MTV.mul(-m1/(m1+m2)));
+		System.out.println("=====================");
+		return new Collision(true, MTV.mul(m2/(m1+m2)), MTV.mul(-m1/(m1+m2)));
 	}
 }

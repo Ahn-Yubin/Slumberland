@@ -3,7 +3,6 @@ package physicalObject;
 import java.awt.Toolkit;
 
 import collision.Collider;
-import vector.Vector;
 
 public class Player extends PhysicalObject {
 	private boolean jetpack = false;
