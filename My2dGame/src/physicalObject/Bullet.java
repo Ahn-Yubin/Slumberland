@@ -12,8 +12,8 @@ public class Bullet extends PhysicalObject {
 		this.setAcceleration(new Vector());
 		this.setDirection(this.getSpeed().unit());
 		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/bullet.png"));
-		this.setWidth(15);
-		this.setHeight(7);
+		this.setWidth(64);
+		this.setHeight(14);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
 	}
 }

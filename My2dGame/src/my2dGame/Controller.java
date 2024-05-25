@@ -1,7 +1,6 @@
 package my2dGame;
 
 import java.awt.event.*;
-import java.util.Iterator;
 
 import collision.Collision;
 import physicalObject.*;
@@ -53,7 +52,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 					move(b);
 				}
 			
-				model.getMonster().setDirection(model.getMonster().getDirection().add(model.getMonster().getDirection().normal().unit().mul(0.3*dt)));
 				
 				view.setViewPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
 				//System.out.println((int)(1000*dt));
@@ -65,8 +63,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 						model.getBulletList().remove(b);
 						continue;
 					}
-					if(Collision.collisionTest(b.getCollider(), model.getMonster().getCollider()).isCollision())
-						model.getBulletList().remove(b);
+				
 				}
 				for(Bullet b : model.getEnemyBulletList()) {
 					System.out.println(""+ model.getEnemyBulletList().size());
@@ -76,20 +73,8 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 						model.getEnemyBulletList().remove(b);
 						continue;
 					}
-					if(Collision.collisionTest(b.getCollider(), model.getMonster().getCollider()).isCollision())
-						model.getEnemyBulletList().remove(b);
 				}
-				Collision coll = Collision.collisionTest(model.getPlayer().getCollider(), model.getMonster().getCollider());
 				//System.out.println("" + coll.isCollision() + " " + model.getPlayer().getSpeed());
-				if(coll.isCollision()) {
-					double speedLossRate = 0.9;
-					model.getPlayer().addPosition(coll.getMinimumTranslationVector());
-					//System.out.println("" + coll.getMinimumTranslationVector());
-					Vector axis = coll.getMinimumTranslationVector().unit();
-					if(model.getPlayer().getSpeed().dot(axis) < 0) {
-						model.getPlayer().addSpeed(axis.mul( -(2-speedLossRate) * model.getPlayer().getSpeed().dot(axis)));
-					}
-				}
 				Collision coll2 = Collision.collisionTest(model.getPlayer().getCollider(), model.getEnemy().getCollider());
 				if(coll2.isCollision()) {
 					double speedLossRate = 0.9;
@@ -97,14 +82,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 					Vector axis = coll2.getMinimumTranslationVector().unit();
 					if(model.getPlayer().getSpeed().dot(axis) < 0)
 						model.getPlayer().addSpeed(axis.mul( -(2-speedLossRate) * model.getPlayer().getSpeed().dot(axis)));
-				}
-				Collision coll3 = Collision.collisionTest(model.getEnemy().getCollider(), model.getMonster().getCollider());
-				if(coll3.isCollision()) {
-					double speedLossRate = 0.9;
-					model.getEnemy().addPosition(coll3.getMinimumTranslationVector());
-					Vector axis = coll3.getMinimumTranslationVector().unit();
-					if(model.getEnemy().getSpeed().dot(axis) < 0)
-						model.getEnemy().addSpeed(axis.mul( -(2-speedLossRate) * model.getEnemy().getSpeed().dot(axis)));
 				}
 				view.repaint();
 				Thread.sleep((int)(1000*dt));

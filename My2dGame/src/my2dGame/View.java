@@ -3,15 +3,12 @@ package my2dGame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.util.Iterator;
 import java.awt.Image;
 import java.awt.Color;
 import javax.swing.JFrame;
 
 import gui.*;
-import physicalObject.Bullet;
-import physicalObject.Monster;
-import physicalObject.PhysicalObject;
+import physicalObject.*;
 import vector.Vector;
 
 public class View extends JFrame implements Runnable{
@@ -54,13 +51,12 @@ public class View extends JFrame implements Runnable{
     	buffImg = createImage(resolutionWidth, resolutionHeight); // Create resolutionWidth X resolutionHeight empty image
     	buffG = (Graphics2D) buffImg.getGraphics();
     	buffG.clearRect(0, 0, resolutionWidth, resolutionHeight); // Clear image
-    	drawObject(buffG, model.getMap());
-    	drawObject(buffG, model.getPlayer());
-    	//drawObject(buffG, model.getMonster());
-    	//drawObject(buffG, model.getEnemy());
-    	drawCrosshair(buffG);
-    	for(Monster m: model.getMonsterList()) {
-    		drawObject(buffG, m);
+    	drawObject(model.getMap());
+    	drawObject(model.getPlayer());
+    	drawObject(model.getEnemy());
+    	drawCrosshair();
+    	for(Obstacle m: model.getObstacleList()) {
+    		drawObject(m);
     	}
     	//===== Ground ======
     	//Vector start = worldCorToViewCor(new Vector(0, 0));
@@ -68,10 +64,10 @@ public class View extends JFrame implements Runnable{
     	//buffG.drawLine((int)start.getX(), (int)start.getY(), (int)end.getX(), (int)end.getY());
     	//===================
     	
-    	drawBullet(buffG);
+    	drawBullet();
     	
-    	drawGUI(buffG, dashCountGUI, new Vector(resolutionWidth/2 - 60, resolutionHeight/2));
-    	drawGUI(buffG, jetpackGaugeGUI, new Vector(resolutionWidth/2 + 57, resolutionHeight/2));
+    	drawGUI(dashCountGUI, new Vector(resolutionWidth/2 - 60, resolutionHeight/2));
+    	drawGUI(jetpackGaugeGUI, new Vector(resolutionWidth/2 + 57, resolutionHeight/2));
     	
         g.drawImage(buffImg, 0, 0, this); // Move the image(buffImg) drawn in the buffer(buffG) to screen g.
     }
@@ -101,16 +97,16 @@ public class View extends JFrame implements Runnable{
 		return this.viewPosition.add(new Vector(x, y));
 	}
 	
-	public void drawBullet(Graphics2D buffG) {
+	public void drawBullet() {
 		for(Bullet b : model.getBulletList()) {
-			drawObject(buffG, b);
+			drawObject(b);
 		}
 		for(Bullet b: model.getEnemyBulletList()) {
-			drawObject(buffG, b);
+			drawObject(b);
 		}
 	}
 	
-	public void drawObject(Graphics2D buffG, PhysicalObject obj) {
+	public void drawObject(PhysicalObject obj) {
 	      Vector position = obj.getPosition();
 	      Image sprite = obj.getSprite(); 
 	      double w = obj.getWidth();
@@ -141,7 +137,7 @@ public class View extends JFrame implements Runnable{
 	      }
 	   }
 	
-	public void drawCrosshair(Graphics2D buffG) {
+	public void drawCrosshair() {
 		int mouseX = this.getMouseX();
 		int mouseY = this.getMouseY();
 		
@@ -157,7 +153,7 @@ public class View extends JFrame implements Runnable{
 		buffG.setColor(Color.BLACK);
 	}
 	
-	public void drawGUI(Graphics2D buffG, GUI gui, Vector viewCor) {
+	public void drawGUI(GUI gui, Vector viewCor) {
 		viewCor = viewCor.sub(new Vector(gui.getGuiWidth()/2 , gui.getGuiHeight()/2));
 		gui.updateUiImage(this.model);
 		buffG.drawImage(gui.getUiImage(), (int)viewCor.getX(), (int)viewCor.getY(), this);

@@ -15,20 +15,21 @@ public class Enemy extends PhysicalObject {
 		super();
 		this.player = model.getPlayer();
 		this.model = model;
-		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/box.png"));
-		this.setWidth(200);
-		this.setHeight(200);
+		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/tempEmemy.png"));
+		this.setWidth(50);
+		this.setHeight(80);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
 		this.simpleAI();
 		this.moveAI();
 	}
+	
 	private void simpleAI() {
 		new Thread(){
 			public void run () {
 				while(true) {
 					shoot();
 					try {
-						Thread.sleep(10);
+						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -37,6 +38,7 @@ public class Enemy extends PhysicalObject {
 			}
 		}.start();
 	}
+	
 	private void moveAI() {
 		new Thread() {
 			public void run() {
@@ -48,12 +50,14 @@ public class Enemy extends PhysicalObject {
 			}
 		}.start();
 	}
+	
 	public void shoot() {
 		if(getPlayer().getPosition().sub(getPosition()).size() <= attackBoundary){
 			Vector dv = getPlayer().getPosition().sub(getPosition()).unit();
 			model.getEnemyBulletList().add(new Bullet(getPosition(), dv.mul(2000)));
 		}
 	}
+	
 	public void move() {
 		Vector v = getPlayer().getPosition().sub(getPosition()).unit();
 		if(HP<maxHP) {
@@ -64,6 +68,7 @@ public class Enemy extends PhysicalObject {
 			addSpeed(new Vector(0, 0.001));
 		}
 	}
+	
 	public void gravity() {
 		if (getPosition().getY() >= 0) {
 			//System.out.println("gravity");

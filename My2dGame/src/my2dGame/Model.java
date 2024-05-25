@@ -6,23 +6,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import physicalObject.*;
 import vector.Vector;
 
-import java.util.ArrayList;
-
 public class Model {
 	private Player player;
-	private Monster monster;
 	private List<Bullet> bulletList;
 	private Map map;
 	private Enemy enemy;
 	private List<Bullet> enemyBulletList;
-	private List<Monster> monsterList;
+	private List<Obstacle> obstacleList;
 
 	public Model() {
 		this.player = new Player();
 		this.player.setPosition(new Vector(100, 250));
-		
-		this.monster = new Monster();
-		this.monster.setPosition(new Vector(250, 0));
 		
 		this.bulletList = new CopyOnWriteArrayList<Bullet>();
 		this.enemyBulletList = new CopyOnWriteArrayList<Bullet>();
@@ -30,12 +24,12 @@ public class Model {
 		
 		this.enemy = new Enemy(this);
 		this.enemy.setPosition(new Vector(250, 1000));
-		this.monsterList = new CopyOnWriteArrayList<Monster>();
-		this.monsterList.add(new Monster(new Vector(250.000000, 250.000000), 500.000000, 100.000000));
-		this.monsterList.add(new Monster(new Vector(50.000000, 100.000000), 100.000000, 200.000000));
-		this.monsterList.add(new Monster(new Vector(250.000000, 100.000000), 100.000000, 200.000000));
-		this.monsterList.add(new Monster(new Vector(450.000000, 100.000000), 100.000000, 200.000000));
-		this.monsterList.add(new Monster(new Vector(150.000000, 50.000000), 100.000000, 100.000000));
+		this.obstacleList = new CopyOnWriteArrayList<Obstacle>();
+		this.obstacleList.add(new Obstacle(new Vector(250.000000, 250.000000), 500.000000, 100.000000));
+		this.obstacleList.add(new Obstacle(new Vector(50.000000, 100.000000), 100.000000, 200.000000));
+		this.obstacleList.add(new Obstacle(new Vector(250.000000, 100.000000), 100.000000, 200.000000));
+		this.obstacleList.add(new Obstacle(new Vector(450.000000, 100.000000), 100.000000, 200.000000));
+		this.obstacleList.add(new Obstacle(new Vector(150.000000, 50.000000), 100.000000, 100.000000));
 
 	}
 
@@ -67,14 +61,11 @@ public class Model {
 		return this.map;
 	}
 
-	public Monster getMonster() {
-		return monster;
-	}
-	public List<Monster> getMonsterList() {
-		return monsterList;
+	public List<Obstacle> getObstacleList() {
+		return obstacleList;
 	}
 
-	public void setMonsterList(List<Monster> monsterList) {
-		this.monsterList = monsterList;
+	public void setObstacleList(List<Obstacle> obstacleList) {
+		this.obstacleList = obstacleList;
 	}
 }
