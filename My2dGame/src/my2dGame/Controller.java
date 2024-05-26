@@ -305,6 +305,11 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 			Vector axis = coll.getMinimumTranslationVector().unit().mul(-1);
 			if(ent.getSpeed().dot(axis) < 0)
 				ent.addSpeed(axis.mul( -(2-speedLossRate) * ent.getSpeed().dot(axis)));
+					
+			ent.setOnGround(true);
+		}
+		else {
+			ent.setOnGround(false);
 		}
 	}
 	

@@ -2,7 +2,6 @@ package my2dGame;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.math.*;
 
 import physicalObject.*;
 import vector.Vector;
