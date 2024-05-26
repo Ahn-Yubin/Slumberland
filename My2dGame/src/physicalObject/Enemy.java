@@ -2,7 +2,6 @@ package physicalObject;
 
 import my2dGame.Model;
 import java.awt.Toolkit;
-
 import collision.Collider;
 import vector.Vector;
 
@@ -11,7 +10,7 @@ public class Enemy extends Entity {
 	
 	private double attackBoundary = 700;
 	private Model model;
-	
+
 	public Enemy(Model model, Vector position) {
 		super();
 		this.model = model;
@@ -70,12 +69,13 @@ public class Enemy extends Entity {
 	
 	public void move() {
 		Vector v = model.getPlayer().getPosition().sub(getPosition()).unit();
-		if(this.getHP() < this.getMaxHP()) {
-			this.getSpeed().setX(v.getX() * 100);
+		if(this.getHP() < this.getMaxHP() || model.getPlayer().getPosition().sub(getPosition()).size() <= attackBoundary) {
+			this.getSpeed().setX(v.getX() * 300);
 		}
-		if(model.getPlayer().isOnShoot()) {
-			//System.out.println("working");
-			//addSpeed(new Vector(0, 0.001));
+		else
+			this.getSpeed().setX(0);
+		if(isOnGround() && Math.random() < 0.5) {
+			this.addSpeed(new Vector(0, 1000));
 		}
 	}
 	
