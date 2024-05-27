@@ -10,7 +10,7 @@ public class Enemy extends Entity {
 	
 	private double attackBoundary = 700;
 	private Model model;
-
+	private int jumpCoolTime = 1000;
 	public Enemy(Model model, Vector position) {
 		super();
 		this.model = model;
@@ -29,7 +29,7 @@ public class Enemy extends Entity {
 			public void run () {
 				while(true) {
 					shoot();
-					System.out.println("꺼억" + model.getEnemyBulletList().size());
+					//System.out.println("꺼억" + model.getEnemyBulletList().size());
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
@@ -44,10 +44,16 @@ public class Enemy extends Entity {
 	private void moveAI() {
 		new Thread() {
 			public void run() {
+				int mSec =0;
 				while(true) {
+					mSec++;
 					move();
 					if(getHP() == 0) {
 						model.getEnemyList().remove(getThis());
+					}
+					if(mSec == jumpCoolTime) {
+						jump();
+						mSec=0;
 					}
 					try {
 						Thread.sleep(1);
@@ -74,7 +80,11 @@ public class Enemy extends Entity {
 		}
 		else
 			this.getSpeed().setX(0);
+	}
+	
+	public void jump() {
 		if(isOnGround() && Math.random() < 0.5) {
+			setOnGround(false);
 			this.addSpeed(new Vector(0, 1000));
 		}
 	}
