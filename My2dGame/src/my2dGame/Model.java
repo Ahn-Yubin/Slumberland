@@ -30,7 +30,7 @@ public class Model{
 		
 		//this.enemyList.add(new Enemy(this, new Vector(800 + Math.random()*800, 1000 + Math.random()*1000)));
 		for(int i=0; i<10; i++)
-			//this.enemyList.add(new Enemy(this, new Vector(Math.random()*6000, 1000 + Math.random()*1000)));
+			this.enemyList.add(new Enemy(this, new Vector(Math.random()*6000, 1000 + Math.random()*1000)));
 		
 		this.obstacleList = new CopyOnWriteArrayList<Obstacle>();
 		this.obstacleList.add(new Obstacle(new Vector(7500.000000, 4512.500000), 15000.000000, 475.000000));
