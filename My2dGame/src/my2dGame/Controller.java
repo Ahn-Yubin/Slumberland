@@ -338,7 +338,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
         	
         	System.out.println("충돌");
         	//System.out.println("setTrue");
-        	//ent.setOnGround(true);
+        	ent.setOnGround(true);
         	//System.out.println("setafter: " + ent.isOnGround());
         	
             ent.addPosition(coll.getMinimumTranslationVector().mul(-1));
@@ -347,7 +347,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
             Vector axis = coll.getMinimumTranslationVector().unit().mul(-1);
             if(ent.getSpeed().dot(axis) < 0)
                 ent.addSpeed(axis.mul( -(2-speedLossRate) * ent.getSpeed().dot(axis)));
-            return;
         }
         //System.out.println("dd");
     }
