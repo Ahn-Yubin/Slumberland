@@ -18,6 +18,7 @@ public class Player extends Entity {
 	private int dashRechargingSec = 2;
 	
 	private int Life = 3;
+	private int maxLife=3;
 	private int maxHP = 100;
 	private int HP = 100;
 	private int attackDamage = 10;
@@ -141,5 +142,12 @@ public class Player extends Entity {
 
 	public void setMaxHP(int maxHP) {
 		this.maxHP = maxHP;
+	}
+	public int getMaxLife() {
+		return Life;
+	}
+
+	public void setMaxLife(int life) {
+		maxLife=life;
 	}
 }
