@@ -23,6 +23,7 @@ public class View extends JFrame implements Runnable{
 	private DashCountGUI dashCountGUI = new DashCountGUI(10, 100);
 	private JetpackGaugeGUI jetpackGaugeGUI = new JetpackGaugeGUI(30, 120);
 	private HPBarGUI hpBarGUI = new HPBarGUI(500, 50);
+	private LifeGUI LifeGUI=new LifeGUI(200,200);
 	
 	private Image buffImg;
     private Graphics2D buffG;
@@ -74,6 +75,7 @@ public class View extends JFrame implements Runnable{
     	drawGUI(dashCountGUI, new Vector(resolutionWidth/2 - 60, resolutionHeight/2));
     	drawGUI(jetpackGaugeGUI, new Vector(resolutionWidth/2 + 57, resolutionHeight/2));
     	drawGUI(hpBarGUI, new Vector(resolutionWidth/2 + 40, resolutionHeight - 100));
+    	drawGUI(LifeGUI, new Vector(resolutionWidth/2 -680, resolutionHeight/2 -300));
     	
         g.drawImage(buffImg, 0, 0, this); // Move the image(buffImg) drawn in the buffer(buffG) to screen g.
     }
