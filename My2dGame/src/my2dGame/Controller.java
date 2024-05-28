@@ -370,6 +370,17 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		Collision coll = Collision.collisionTest(eB.getCollider(), p.getCollider());
 		if(coll.isCollision()) {
 			p.setHP(p.getHP() - 5);
+			if(p.getHP()<=0) {
+				p.setLife(p.getLife()-1);
+				if(p.getLife()<=0) {
+					this.model=new Model();
+					this.view=new View(model);
+					
+					view.addMouseListener(this);
+					view.addKeyListener(this);
+				}
+				model.getPlayer().setHP(100);
+			}
 			model.getEnemyBulletList().remove(eB);
 		}
 	}
