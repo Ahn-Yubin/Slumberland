@@ -3,13 +3,15 @@ package weapon;
 public class Weapon {
 	private int maxAmmo;
 	private int ammo;
-	private int reloadTime;
-	public Weapon(int maxAmmo, int reload_time) {
+	private double reloadTime;
+	
+	public Weapon(int maxAmmo, double reloadTime) {
 		this.maxAmmo = maxAmmo;
 		this.ammo = maxAmmo;
-		this.reloadTime = reload_time;
+		this.reloadTime = reloadTime;
 		reload();
 	}
+	
 	public void reload() {
 		new Thread() {
 			public void run() {
@@ -17,7 +19,7 @@ public class Weapon {
 					if(ammo == 0) {
 						try {
 							System.out.println("reload");
-							Thread.sleep(reloadTime);
+							Thread.sleep((int)(1000*reloadTime));
 							ammo = maxAmmo;
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
@@ -34,23 +36,30 @@ public class Weapon {
 			}
 		}.start();
 	}
+	
 	public int getMaxammo() {
 		return maxAmmo;
 	}
+	
 	public void setMaxammo(int maxAmmo) {
 		this.maxAmmo = maxAmmo;
 	}
+	
 	public int getAmmo() {
 		return ammo;
 	}
+	
 	public void setAmmo(int ammo) {
+		if (ammo < 0)
+			ammo = 0;
 		this.ammo = ammo;
 	}
-	public double getReload_time() {
+	
+	public double getReloadTime() {
 		return reloadTime;
 	}
-	public void setReload_time(int reloadTime) {
+
+	public void setReloadTime(double reloadTime) {
 		this.reloadTime = reloadTime;
 	}
-	
 }

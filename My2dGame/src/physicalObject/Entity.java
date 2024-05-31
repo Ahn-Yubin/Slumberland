@@ -1,24 +1,24 @@
 package physicalObject;
 
 public abstract class Entity extends PhysicalObject {
-	private int HP = 100;
-	private int maxHP = 100;
+	private double hp = 100;
+	private double maxHP = 100;
 	
 	private boolean isOnGround = false;
 	
-	public int getHP() {
-		return HP;
+	public double getHp() {
+		return hp;
 	}
 	
-	public void setHP(int hP) {
-		HP = hP;
+	public void setHp(double hp) {
+		this.hp = hp;
 	}
 	
-	public int getMaxHP() {
+	public double getMaxHP() {
 		return maxHP;
 	}
 
-	public void setMaxHP(int maxHP) {
+	public void setMaxHP(double maxHP) {
 		this.maxHP = maxHP;
 	}
 

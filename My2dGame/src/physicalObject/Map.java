@@ -9,8 +9,8 @@ public class Map extends PhysicalObject {
 
 	public Map() {
 		super();
-		this.setWidth(8000);
-		this.setHeight(5000);
+		this.setWidth(4000);
+		this.setHeight(2500);
 		this.setPosition(new Vector(1000, 1000));
 		this.setSpeed(new Vector(0, 0));
 		this.setAcceleration(new Vector(0, 0));

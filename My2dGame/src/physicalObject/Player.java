@@ -3,34 +3,67 @@ package physicalObject;
 import java.awt.Toolkit;
 
 import collision.Collider;
+import weapon.Weapon;
 
 public class Player extends Entity {
-	
+
 	private boolean jetpack = false;
 	private boolean onShoot = false;
-	
+
 	private double maxJetpackGauge = 100;
 	private double jetpackGauge = maxJetpackGauge;
 	private double jetpackGaugeUsagePerSec = 20;
-	
+
 	private int maxDashCount = 6;
 	private int dashCount = maxDashCount;
 	private int dashRechargingSec = 2;
-	
+
 	private int Life = 3;
-	private int maxLife=3;
-	private int maxHP = 100;
-	private int HP = 100;
 	private int attackDamage = 10;
+
+	private double hpRecoveryPerSec = 3;
 	
+	private Weapon weapon;
+
 	public Player() {
 		super();
+		this.setMaxHP(100);
+		this.setHp(this.getMaxHP());
 		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/player.png"));
 		this.setWidth(100);
 		this.setHeight(160);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
+		this.weapon = new Weapon(5, 3);
+		new HpRecovery().start();
 	}
-	
+
+	private class HpRecovery extends Thread {
+		private double dt = 1.0/1000.0; // second
+
+		public void run() {
+			try {
+				while (true) {
+					//System.out.println("" + getHp());
+					if(getHp() < getMaxHP()) {
+						//System.out.println("" + getHp());
+						if(getMaxHP() < getHp() + hpRecoveryPerSec*dt) {
+							//System.out.println("풀피만들기" + getHp());
+							setHp(getMaxHP());
+						}
+						else {
+							//System.out.println("찔끔" + getHp());
+							setHp(getHp() + hpRecoveryPerSec*dt);
+						}
+					}
+					sleep((int) (1000 * dt));
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public int getMaxDashCount() {
 		return maxDashCount;
 	}
@@ -44,21 +77,21 @@ public class Player extends Entity {
 	}
 
 	public void setDashCount(int dashCount) {
-		if(dashCount < 0)
+		if (dashCount < 0)
 			dashCount = 0;
 		this.dashCount = dashCount;
 	}
 
-	//================== OnShoot ====================
+	// ================== OnShoot ====================
 	public boolean isOnShoot() {
 		return this.onShoot;
 	}
-	
+
 	public void setOnShoot(boolean b) {
 		this.onShoot = b;
 	}
-	
-	//================== Jetpack ====================
+
+	// ================== Jetpack ====================
 	public boolean isJetpack() {
 		return jetpack;
 	}
@@ -66,8 +99,8 @@ public class Player extends Entity {
 	public void setJetpack(boolean jetpack) {
 		this.jetpack = jetpack;
 	}
-	
-	//================== MaxJetpackGauge ====================
+
+	// ================== MaxJetpackGauge ====================
 	public double getMaxJetpackGauge() {
 		return maxJetpackGauge;
 	}
@@ -76,7 +109,7 @@ public class Player extends Entity {
 		this.maxJetpackGauge = maxJetpackGauge;
 	}
 
-	//================== JetpackGauge ====================
+	// ================== JetpackGauge ====================
 	public double getJetpackGauge() {
 		return jetpackGauge;
 	}
@@ -84,8 +117,8 @@ public class Player extends Entity {
 	public void setJetpackGauge(double jetpackGauge) {
 		this.jetpackGauge = jetpackGauge;
 	}
-	
-	//==============================================
+
+	// ==============================================
 	public String toString() {
 		String out = "=========\n";
 		out += "Location Vector : " + this.getPosition() + "\n";
@@ -118,16 +151,6 @@ public class Player extends Entity {
 		Life = life;
 	}
 
-	public int getHP() {
-		return HP;
-	}
-
-	public void setHP(int hP) {
-		HP = hP;
-		if(HP>maxHP)
-			HP = maxHP;
-	}
-
 	public int getAttackDamage() {
 		return attackDamage;
 	}
@@ -136,18 +159,19 @@ public class Player extends Entity {
 		this.attackDamage = attackDamage;
 	}
 
-	public int getMaxHP() {
-		return maxHP;
+	public double getHpRecoveryPerSec() {
+		return hpRecoveryPerSec;
 	}
 
-	public void setMaxHP(int maxHP) {
-		this.maxHP = maxHP;
-	}
-	public int getMaxLife() {
-		return Life;
+	public void setHpRecoveryPerSec(double hpRecoveryPerSec) {
+		this.hpRecoveryPerSec = hpRecoveryPerSec;
 	}
 
-	public void setMaxLife(int life) {
-		maxLife=life;
+	public Weapon getWeapon() {
+		return weapon;
+	}
+
+	public void setWeapon(Weapon weapon) {
+		this.weapon = weapon;
 	}
 }

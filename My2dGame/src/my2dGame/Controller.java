@@ -31,11 +31,13 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 
 		view.addMouseListener(this);
 		view.addKeyListener(this);
+		
 		/*
         Thread view_thread = new Thread(view);
         view_thread.setDaemon(true);
         view_thread.start();
-		 */
+        */
+        
 		model.getMap().setPosition(model.getInitialPlayerPosition());
 	}
 
@@ -58,8 +60,8 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				
 				for(Obstacle o : model.getObstacleList()) {
 					collisionEffect(o, model.getPlayer());
-					for(Enemy en : model.getEnemyList()) {
-						collisionEffect(o, en);
+					for(Enemy e : model.getEnemyList()) {
+						collisionEffect(o, e);
 					}
 				}
 				
@@ -79,8 +81,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 					for(PlayerBullet pb : model.getPlayerBulletList())
 						collisionEffect(eb, pb);
 				}
-
-				
 				
 				view.setViewPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
 				
@@ -106,6 +106,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void dragForce(PhysicalObject obj) {
 		double c = 0.001;
 		obj.addAcceleration(obj.getSpeed().mul(-c * obj.getSpeed().size()));
+		//obj.addAcceleration(obj.getSpeed().mul(-c));
 	}
 
 	@Override
@@ -241,16 +242,22 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	}
 
 	public void shoot() {
-		model.getPlayer().setOnShoot(true);
-		int mouseX = view.getMouseX();
-		int mouseY = view.getMouseY();
-		//---------Convert mouse's vector to world vector then sub Player's vector-----------
-		Vector viewCor = new Vector(mouseX, mouseY);
-		Vector worldCor = view.viewCorToWorldCor(viewCor);
-		Vector dv = worldCor.sub(model.getPlayer().getPosition()).unit();
-		//-----------------------------------------------------------------------------------
-		model.getPlayerBulletList().add(new PlayerBullet(model.getPlayer().getPosition(), dv.mul(2000)));
-		model.getPlayer().addSpeed(dv.mul(-300)); // Rebound
+		if(model.getPlayer().getWeapon().getAmmo() > 0) {
+			model.getPlayer().setOnShoot(true);
+			model.getPlayer().getWeapon().setAmmo(model.getPlayer().getWeapon().getAmmo() - 1);
+			int mouseX = view.getMouseX();
+			int mouseY = view.getMouseY();
+			//---------Convert mouse's vector to world vector then sub Player's vector-----------
+			Vector viewCor = new Vector(mouseX, mouseY);
+			Vector worldCor = view.viewCorToWorldCor(viewCor);
+			Vector dv = worldCor.sub(model.getPlayer().getPosition()).unit();
+			//-----------------------------------------------------------------------------------
+			PlayerBullet pb = new PlayerBullet(model.getPlayer().getPosition(), dv.mul(2000));
+			pb.addSpeed(model.getPlayer().getSpeed());
+			pb.addAcceleration(model.getPlayer().getAcceleration());
+			model.getPlayerBulletList().add(pb);
+			model.getPlayer().addSpeed(dv.mul(-300)); // Rebound
+		}
 	}
 
 	public void dash() {
@@ -336,10 +343,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
         Collision coll = Collision.collisionTest(o.getCollider(), ent.getCollider());
         if(coll.isCollision()) {
         	
-        	System.out.println("충돌");
-        	//System.out.println("setTrue");
         	ent.setOnGround(true);
-        	//System.out.println("setafter: " + ent.isOnGround());
         	
             ent.addPosition(coll.getMinimumTranslationVector().mul(-1));
 
@@ -348,13 +352,12 @@ public class Controller implements KeyListener, MouseListener, Runnable{
             if(ent.getSpeed().dot(axis) < 0)
                 ent.addSpeed(axis.mul( -(2-speedLossRate) * ent.getSpeed().dot(axis)));
         }
-        //System.out.println("dd");
     }
 	
 	public void collisionEffect(PlayerBullet pB, Enemy e) {
 		Collision coll = Collision.collisionTest(pB.getCollider(), e.getCollider());
 		if(coll.isCollision()) {
-			e.setHP(e.getHP() - 10);
+			e.setHp(e.getHp() - 10);
 			model.getPlayerBulletList().remove(pB);
 		}
 	}
@@ -369,18 +372,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void collisionEffect(EnemyBullet eB, Player p) {
 		Collision coll = Collision.collisionTest(eB.getCollider(), p.getCollider());
 		if(coll.isCollision()) {
-			p.setHP(p.getHP() - 5);
-			if(p.getHP()<=0) {
-				p.setLife(p.getLife()-1);
-				if(p.getLife()<=0) {
-					this.model=new Model();
-					this.view=new View(model);
-					
-					view.addMouseListener(this);
-					view.addKeyListener(this);
-				}
-				model.getPlayer().setHP(100);
-			}
+			p.setHp(p.getHp() - 1);
 			model.getEnemyBulletList().remove(eB);
 		}
 	}

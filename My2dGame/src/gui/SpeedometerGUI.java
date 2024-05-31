@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.RenderingHints;
@@ -13,9 +14,10 @@ import java.io.InputStream;
 import my2dGame.Model;
 
 public class SpeedometerGUI extends GUI{
-	int v;
-	InputStream in;
-	Font font;
+	private int v;
+	private InputStream in;
+	private Font font;
+	
 	public SpeedometerGUI(double guiWidth, double guiHeight) {
 		super(guiWidth, guiHeight);
 		setMaxAlpha(0.9f);
@@ -24,6 +26,7 @@ public class SpeedometerGUI extends GUI{
 		// TODO Auto-generated constructor stub
 		setFont();
 	}
+	
 	public void setFont() {
 		try {
 			in = new BufferedInputStream(new FileInputStream("res/font/koverwatch.ttf"));
@@ -43,7 +46,9 @@ public class SpeedometerGUI extends GUI{
 			e.printStackTrace();
 		}
 		this.getBuffG().setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		this.getBuffG().setFont(font);
 	}
+	
 	@Override
 	public void updateUiImage(Model model) {
 		// TODO Auto-generated method stub
@@ -51,7 +56,9 @@ public class SpeedometerGUI extends GUI{
 		this.getBuffG().fillRect(0, 0, (int)this.getGuiWidth(), (int)this.getGuiHeight());
 		this.getBuffG().setComposite(AlphaComposite.SrcOver);
 		
-		this.getBuffG().setFont(font);
-		this.getBuffG().drawString("" + (int)(model.getPlayer().getSpeed().size()*0.07) + "km/h", (int)getGuiWidth()/3+10,(int)getGuiHeight()/3+10);
+		int speed = (int)(model.getPlayer().getSpeed().size()*0.09);
+		this.getBuffG().setColor(new Color(255-speed, 255, 255)); //temp
+		
+		this.getBuffG().drawString("" + speed + "km/h", (int)getGuiWidth()/3+10,(int)getGuiHeight()/3+10);
 	}
 }

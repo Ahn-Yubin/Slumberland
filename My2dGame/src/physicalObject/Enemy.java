@@ -48,7 +48,7 @@ public class Enemy extends Entity {
 				while(true) {
 					mSec++;
 					move();
-					if(getHP() == 0) {
+					if(getHp() == 0) {
 						model.getEnemyList().remove(getThis());
 					}
 					if(mSec == jumpCoolTime) {
@@ -75,7 +75,7 @@ public class Enemy extends Entity {
 	
 	public void move() {
 		Vector v = model.getPlayer().getPosition().sub(getPosition()).unit();
-		if(this.getHP() < this.getMaxHP() || model.getPlayer().getPosition().sub(getPosition()).size() <= attackBoundary) {
+		if(this.getHp() < this.getMaxHP() || model.getPlayer().getPosition().sub(getPosition()).size() <= attackBoundary) {
 			this.getSpeed().setX(v.getX() * 300);
 		}
 		else

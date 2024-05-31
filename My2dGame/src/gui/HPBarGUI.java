@@ -31,8 +31,7 @@ public class HPBarGUI extends GUI {
 	}
 
 	public void updateUiImage(Model model) {
-		int currentHP = model.getPlayer().getHP();
-		int maxHP = model.getPlayer().getMaxHP();
+		double currentHP = model.getPlayer().getHp();
 
 		double calculatedHPBarSlope = (hpBarSlope * this.getGuiWidth()) / (this.getGuiWidth() + hpBarSlope * this.getGuiHeight());
 		this.tmpBuffG.setComposite(AlphaComposite.Clear);
@@ -47,8 +46,8 @@ public class HPBarGUI extends GUI {
 		this.tmpBuffG.fillRoundRect(borderThickness, borderThickness, (int)this.getGuiWidth() - 2*borderThickness, (int)this.getGuiHeight() - 2*borderThickness, roundDeg, roundDeg);
 
 		int Barratio = 10;
-		int hpPerBar = model.getPlayer().getMaxHP()/Barratio;
-		int drawHPBar = currentHP / hpPerBar;
+		double hpPerBar = model.getPlayer().getMaxHP()/Barratio;
+		int drawHPBar = (int)(currentHP / hpPerBar);
 
 
 		double w = (this.getGuiWidth() - 2*borderThickness) / (Barratio + whiteSpaceRatio*(Barratio-1));
@@ -58,7 +57,7 @@ public class HPBarGUI extends GUI {
 
 		this.tmpBuffG.setColor(Color.WHITE);
 		for(int i = 0; i <= drawHPBar; i++) {
-			if(i==drawHPBar)
+			if(i == drawHPBar)
 				this.tmpBuffG.fillRoundRect((int)(a + i * d) , borderThickness,  (int)((w * (currentHP % hpPerBar)) / hpPerBar), (int)h, roundDeg, roundDeg);
 			else
 				this.tmpBuffG.fillRoundRect((int)(a + i * d) , borderThickness, (int)w, (int)h, roundDeg, roundDeg);

@@ -11,6 +11,7 @@ import my2dGame.Model;
 public class LifeGUI extends GUI {
 	
 	
+	private int lifeCnt=3; 
 	private Image image=Toolkit.getDefaultToolkit().getImage("res/img/life.png");
 	
 	public LifeGUI(double guiWidth, double guiHeight) {
@@ -21,18 +22,18 @@ public class LifeGUI extends GUI {
 	}
 	
 	public void updateUiImage(Model model) {
-		int currentLife=model.getPlayer().getLife();
-		int maxLife=model.getPlayer().getMaxLife();
-		
 		this.getBuffG().setComposite(AlphaComposite.Clear);
 		this.getBuffG().fillRect(0, 0, (int)this.getGuiWidth(), (int)this.getGuiHeight());
 		this.getBuffG().setComposite(AlphaComposite.SrcOver);
 		
-		String text=": "+ Integer.toString(currentLife)+" remained";
+		String text=": "+ Integer.toString(lifeCnt)+" remained";
 		this.getBuffG().setColor(Color.black);
 		this.getBuffG().setFont(new Font("Arial",Font.BOLD,20));
-		this.getBuffG().drawString(text,(int)getGuiWidth()/3+10,(int)getGuiHeight()/3+10);
+		this.getBuffG().drawString(text,(int)getGuiWidth()-50,(int)getGuiHeight()/3+10);
 		this.getBuffG().drawImage(image,15,15,(int)getGuiWidth()/3,(int)getGuiHeight()/3,null);
 	}
 	
+	public void setlifeCnt(int cnt) {
+		lifeCnt=cnt;
+	}
 }
