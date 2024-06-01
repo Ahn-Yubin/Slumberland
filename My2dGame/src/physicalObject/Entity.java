@@ -11,7 +11,10 @@ public abstract class Entity extends PhysicalObject {
 	}
 	
 	public void setHp(double hp) {
-		this.hp = hp;
+		if(hp>maxHP)
+			this.hp = maxHP;
+		else
+			this.hp = hp;
 	}
 	
 	public double getMaxHP() {
