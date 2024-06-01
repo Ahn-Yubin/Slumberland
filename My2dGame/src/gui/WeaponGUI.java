@@ -59,15 +59,11 @@ public class WeaponGUI extends GUI{
 		int currentAmmo = model.getPlayer().getWeapon().getAmmo();
 		
 		if(currentAmmo > 0) {
-			this.getBuffG().drawImage(image, 0, 0, 90, 50, null);
-			this.getBuffG().drawString("" + currentAmmo + " / " + maxAmmo, 110,(int)getGuiHeight() - 10);
+			this.getBuffG().drawImage(image, 0, 0, 54, 30, null);
+			this.getBuffG().drawString("" + currentAmmo + " / " + maxAmmo, 60,(int)getGuiHeight());
 		}
 		else {
-			font = font.deriveFont(50f);
-			this.getBuffG().setFont(font);
-			this.getBuffG().drawString("reloading...", 10,(int)getGuiHeight() - 5);
-			font = font.deriveFont(40f);
-			this.getBuffG().setFont(font);
+			this.getBuffG().drawString("reloading...", 0,(int)getGuiHeight());
 		}
 	}
 }

@@ -13,12 +13,12 @@ import java.io.InputStream;
 
 import my2dGame.Model;
 
-public class SpeedometerGUI extends GUI{
+public class DetailedHPGUI extends GUI{
 	private int v;
 	private InputStream in;
 	private Font font;
 	
-	public SpeedometerGUI(double guiWidth, double guiHeight) {
+	public DetailedHPGUI(double guiWidth, double guiHeight) {
 		super(guiWidth, guiHeight);
 		setMaxAlpha(0.9f);
 		setMinAlpha(0.7f);
@@ -32,12 +32,6 @@ public class SpeedometerGUI extends GUI{
 			in = new BufferedInputStream(new FileInputStream("res/font/koverwatch.ttf"));
 			font = Font.createFont(Font.TRUETYPE_FONT, in);
 			font = font.deriveFont(40f);
-			//font = font.deriveFont(font.ITALIC);
-			
-			AffineTransform trans = new AffineTransform();
-			trans.shear(-0.5, 0);		
-			font = font.deriveFont(trans);
-			
 		} catch (FontFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,9 +50,9 @@ public class SpeedometerGUI extends GUI{
 		this.getBuffG().fillRect(0, 0, (int)this.getGuiWidth(), (int)this.getGuiHeight());
 		this.getBuffG().setComposite(AlphaComposite.SrcOver);
 		
-		int speed = (int)(model.getPlayer().getSpeed().size()*0.09);
-		this.getBuffG().setColor(new Color(255-speed, 255, 255)); //temp
+		int hp = (int)(Math.ceil(model.getPlayer().getHp()));
+		int maxHP = (int)(Math.ceil(model.getPlayer().getMaxHP()));
 		
-		this.getBuffG().drawString(String.format("%03d",speed) + "km/h", 0,(int)getGuiHeight());
+		this.getBuffG().drawString(hp + " / " + maxHP, 0,(int)getGuiHeight());
 	}
 }
