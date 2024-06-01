@@ -5,11 +5,13 @@ public class Weapon {
 	private int ammo;
 	private double reloadTime;
 	private boolean isReloading;
+	private double attackDamage;
 	
-	public Weapon(int maxAmmo, double reloadTime) {
+	public Weapon(int maxAmmo, double reloadTime, double attackDamage) {
 		this.maxAmmo = maxAmmo;
 		this.ammo = maxAmmo;
 		this.reloadTime = reloadTime;
+		this.setAttackDamage(attackDamage);
 		reload();
 	}
 
@@ -80,5 +82,13 @@ public class Weapon {
 
 	public void setReloading(boolean isReloading) {
 		this.isReloading = isReloading;
+	}
+
+	public double getAttackDamage() {
+		return attackDamage;
+	}
+
+	public void setAttackDamage(double attackDamage) {
+		this.attackDamage = attackDamage;
 	}
 }
