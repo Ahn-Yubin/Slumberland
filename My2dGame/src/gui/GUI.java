@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 import my2dGame.Model;
 
-public abstract class GUI{
+public abstract class GUI {
 	private double guiWidth;
 	private double guiHeight;
 	

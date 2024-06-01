@@ -59,6 +59,6 @@ public class SpeedometerGUI extends GUI{
 		int speed = (int)(model.getPlayer().getSpeed().size()*0.09);
 		this.getBuffG().setColor(new Color(255-speed, 255, 255)); //temp
 		
-		this.getBuffG().drawString("" + speed + "km/h", (int)getGuiWidth()/3+10,(int)getGuiHeight()/3+10);
+		this.getBuffG().drawString(String.format("%03d",speed) + "km/h", 0,(int)getGuiHeight());
 	}
 }

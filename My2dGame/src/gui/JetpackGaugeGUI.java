@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.RenderingHints;
 import java.awt.AlphaComposite;
 
 import my2dGame.Model;
@@ -44,5 +45,7 @@ public class JetpackGaugeGUI extends GUI {
 		this.getBuffG().setComposite(AlphaComposite.Clear);
 		this.getBuffG().fillArc((int)(this.getGuiWidth()-2*r-dr), (int)(this.getGuiHeight()/2 - r), (int)(2*r), (int)(2*r), -theta, 2*theta);
 		this.getBuffG().setComposite(AlphaComposite.SrcOver);
+		
+		this.getBuffG().setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 }
