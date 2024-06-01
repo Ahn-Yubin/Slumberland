@@ -173,18 +173,37 @@ public class View extends JPanel implements Runnable {
 		Vector position = o.getPosition();
 		double w = o.getWidth() * (resolutionWidth / viewWidth);
 		double h = o.getHeight()* (resolutionHeight / viewHeight);
-		Vector view_cor = worldCorToViewCor(position);
-		Vector rect_cor = view_cor.sub(new Vector(w/2, h/2));
+		Vector viewCor = worldCorToViewCor(position);
+		Vector rectCor = viewCor.sub(new Vector(w/2, h/2));
 		
 		int x = 10;
 		int y = 10;
+		int z = 18;
+		int r1 = 10;
+		int r2 = 8;
 		
 		buffG.setColor(new Color(15, 22, 29));
-		buffG.fillRect((int)rect_cor.getX(), (int)rect_cor.getY(), (int)w, (int)h);
+		buffG.fillRect((int)rectCor.getX(), (int)rectCor.getY(), (int)w, (int)h);
 		buffG.setColor(new Color(38, 49, 61));
-		buffG.fillRect((int)rect_cor.getX() + x, (int)rect_cor.getY()+ x, (int)w - 2*x, (int)h - 2*x);
+		buffG.fillRect((int)rectCor.getX() + x, (int)rectCor.getY()+ x, (int)w - 2*x, (int)h - 2*x);
 		buffG.setColor(new Color(32, 42, 53));
-		buffG.fillRect((int)rect_cor.getX() + x + y, (int)rect_cor.getY()+ x + y, (int)w - 2*(x+y), (int)h - 2*(x+y));
+		buffG.fillRect((int)rectCor.getX() + x + y, (int)rectCor.getY()+ x + y, (int)w - 2*(x+y), (int)h - 2*(x+y));
+		
+		Vector firstDotCor = rectCor.add(new Vector(x + y + z - r1, x + y + z - r1));
+		double dx = w - 2* (x + y + z);
+		double dy = h - 2* (x + y + z);
+		
+		buffG.setColor(new Color(15, 22, 29));
+		buffG.fillOval((int)firstDotCor.getX(), (int)firstDotCor.getY(), 2*r1, 2*r1);
+		buffG.fillOval((int)(firstDotCor.getX() + dx), (int)firstDotCor.getY(), 2*r1, 2*r1);
+		buffG.fillOval((int)firstDotCor.getX(), (int)(firstDotCor.getY() + dy), 2*r1, 2*r1);
+		buffG.fillOval((int)(firstDotCor.getX() + dx), (int)(firstDotCor.getY() + dy), 2*r1, 2*r1);
+		
+		buffG.setColor(new Color(81, 93, 107));
+		buffG.fillOval((int)firstDotCor.getX(), (int)firstDotCor.getY(), 2*r2, 2*r2);
+		buffG.fillOval((int)(firstDotCor.getX() + dx), (int)firstDotCor.getY(), 2*r2, 2*r2);
+		buffG.fillOval((int)firstDotCor.getX(), (int)(firstDotCor.getY() + dy), 2*r2, 2*r2);
+		buffG.fillOval((int)(firstDotCor.getX() + dx), (int)(firstDotCor.getY() + dy), 2*r2, 2*r2);
 	}
 
 	public void drawCrosshair() {
