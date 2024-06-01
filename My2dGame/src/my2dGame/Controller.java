@@ -361,7 +361,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void collisionEffect(PlayerBullet pB, Enemy e) {
 		Collision coll = Collision.collisionTest(pB.getCollider(), e.getCollider());
 		if(coll.isCollision()) {
-			e.setHp(e.getHp() - 10);
+			e.setHp(e.getHp() - model.getPlayer().getWeapon().getAttackDamage());
 			model.getPlayerBulletList().remove(pB);
 		}
 	}

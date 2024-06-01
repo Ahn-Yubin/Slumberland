@@ -19,7 +19,6 @@ public class Player extends Entity {
 	private int dashRechargingSec = 2;
 
 	private int Life = 3;
-	private int attackDamage = 10;
 
 	private double hpRecoveryPerSec = 3;
 	
@@ -33,8 +32,8 @@ public class Player extends Entity {
 		this.setWidth(100);
 		this.setHeight(160);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
-		this.weapon = new Weapon(20, 3);
-		new HpRecovery().start();
+		this.weapon = new Weapon(20, 3, 10);
+		//new HpRecovery().start();
 	}
 
 	private class HpRecovery extends Thread {
@@ -149,14 +148,6 @@ public class Player extends Entity {
 
 	public void setLife(int life) {
 		Life = life;
-	}
-
-	public int getAttackDamage() {
-		return attackDamage;
-	}
-
-	public void setAttackDamage(int attackDamage) {
-		this.attackDamage = attackDamage;
 	}
 
 	public double getHpRecoveryPerSec() {
