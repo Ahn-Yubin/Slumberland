@@ -123,6 +123,9 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 			dash();
 			spaceBar = true;
 		}
+		if(e.getKeyCode() == KeyEvent.VK_R && !model.getPlayer().getWeapon().isReloading()) {
+			model.getPlayer().getWeapon().settingAmmo();
+		}
 	}
 
 	@Override
@@ -243,7 +246,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	}
 
 	public void shoot() {
-		if(model.getPlayer().getWeapon().getAmmo() > 0) {
+		if(model.getPlayer().getWeapon().getAmmo() > 0 && !model.getPlayer().getWeapon().isReloading()) {
 			model.getPlayer().setOnShoot(true);
 			model.getPlayer().getWeapon().setAmmo(model.getPlayer().getWeapon().getAmmo() - 1);
 			int mouseX = view.getMouseX();
