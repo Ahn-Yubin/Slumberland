@@ -17,7 +17,7 @@ public class BossMissile extends Bullet {
 		this.setWidth(640);
 		this.setHeight(140);
 		this.setDamage(30);
-		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
+		this.setCollider(new Collider(this, this.getWidth() - 100, this.getHeight()));
 		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/bullet/bossMissile.png"));
 		trace();
 	}
@@ -27,13 +27,13 @@ public class BossMissile extends Bullet {
 			public void run() {
 				try {
 					while (true) {
-						System.out.println(getPosition() + " " + getSpeed());
+						System.out.println(getSpeed().size());
 						Vector dp = target.getPosition().sub(getPosition());
 						Vector spd = getSpeed();
 						
 						double cross = dp.getX()*spd.getY() - dp.getY()*spd.getX();
 						
-						double tracingPerformence = 1000 * ((cross > 0) ? 1 : -1);
+						double tracingPerformence = 2 * spd.size() * ((cross > 0) ? 1 : -1);
 						Vector dv = new Vector(spd.getY(), -spd.getX()).unit().mul(tracingPerformence);
 						setAcceleration(dv);
 						setDirection(getSpeed());

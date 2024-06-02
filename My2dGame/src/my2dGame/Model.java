@@ -109,13 +109,13 @@ public class Model {
 		this.enemyList.add(boss);
 		
 		this.obstacleList = new CopyOnWriteArrayList<Obstacle>();
-		this.obstacleList.add(new Obstacle(new Vector(9000.000000, 10687.500000), 18000.000000, 1425.000000));
-		this.obstacleList.add(new Obstacle(new Vector(1125.000000, 4987.500000), 2250.000000, 9975.000000));
-		this.obstacleList.add(new Obstacle(new Vector(16875.000000, 4987.500000), 2250.000000, 9975.000000));
-		this.obstacleList.add(new Obstacle(new Vector(9000.000000, 6887.500000), 3000.000000, 475.000000));
-		this.obstacleList.add(new Obstacle(new Vector(5250.000000, 4987.500000), 3000.000000, 475.000000));
-		this.obstacleList.add(new Obstacle(new Vector(12750.000000, 4987.500000), 3000.000000, 475.000000));
-		this.obstacleList.add(new Obstacle(new Vector(9000.000000, 712.500000), 13500.000000, 1425.000000));
+		this.obstacleList.add(new Obstacle(new Vector(5250.000000, 9750.000000), 10500.000000, 1500.000000));
+		this.obstacleList.add(new Obstacle(new Vector(750.000000, 4500.000000), 1500.000000, 9000.000000));
+		this.obstacleList.add(new Obstacle(new Vector(9750.000000, 4500.000000), 1500.000000, 9000.000000));
+		this.obstacleList.add(new Obstacle(new Vector(5250.000000, 6375.000000), 3000.000000, 750.000000));
+		this.obstacleList.add(new Obstacle(new Vector(3375.000000, 4875.000000), 2250.000000, 750.000000));
+		this.obstacleList.add(new Obstacle(new Vector(7125.000000, 4875.000000), 2250.000000, 750.000000));
+		this.obstacleList.add(new Obstacle(new Vector(5250.000000, 750.000000), 7500.000000, 1500.000000));
 	}
 
 	public List<EnemyBullet> getEnemyBulletList() {

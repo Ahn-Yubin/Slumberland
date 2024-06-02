@@ -17,10 +17,11 @@ public class Boss extends Enemy{
 		this.setWidth(507*2);
 		this.setHeight(447*2);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
-		shotMissile(new Vector(1000, 0));
-		shotMissile(new Vector(0, 1000));
-		shotMissile(new Vector(-1000, 0));
-		shotMissile(new Vector(1000, 1000));
+		shotMissile(new Vector(700, 0));
+		shotMissile(new Vector(0, 700));
+		shotMissile(new Vector(-700, 0));
+		shotMissile(new Vector(700, 700));
+		shotMissile(new Vector(-700, 700));
 	}
 	
 	public void shotMissile(Vector v) {

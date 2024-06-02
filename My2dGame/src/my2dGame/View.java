@@ -159,7 +159,7 @@ public class View extends JPanel implements Runnable {
 		// ============================================================
 		buffG.drawImage(sprite, trans, this);
 
-		boolean onHitbox = false;
+		boolean onHitbox = true;
 		if (onHitbox) {
 			Vector[] temp = obj.getCollider().getRotatedNormal();
 			Vector x0 = worldCorToViewCor(position.sub(temp[0]).add(temp[1]));
