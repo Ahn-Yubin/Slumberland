@@ -20,9 +20,9 @@ public class Enemy extends Entity {
 		super();
 		this.model = model;
 		this.setPosition(position);
-		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/enemy.png"));
-		this.setWidth(100);
-		this.setHeight(160);
+		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/bmo11.png"));
+		this.setWidth(500);
+		this.setHeight(450);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
 		this.attackBoundary = 700;
 		this.leftMovementRestrictions = this.getPosition().getX() - 300;
@@ -36,7 +36,7 @@ public class Enemy extends Entity {
 	private void simpleAI() {
 		new Thread() {
 			public void run() {
-				while(true) {
+				while(getHp() > 0) {
 					move();
 					if(model.getPlayer().getPosition().sub(getPosition()).size() <= attackBoundary && !isReloading) {
 						for(int i=0; i<5; i++) {
@@ -65,6 +65,9 @@ public class Enemy extends Entity {
 						e.printStackTrace();
 					}
 				}
+				if(Math.random() > 0.5)
+					model.getPlayer().setHp(model.getPlayer().getHp() + 10);
+				model.getEnemyList().remove(getThis());
 			}
 		}.start();
 	}
@@ -77,9 +80,11 @@ public class Enemy extends Entity {
 	}
 
 	public void shoot() {
+		if(this.getHp() > 0) {
 		this.getSpeed().setX(0);
 		Vector dv = model.getPlayer().getPosition().sub(getPosition()).unit();
 		model.getEnemyBulletList().add(new EnemyBullet(getPosition(), dv.mul(2000)));
+		}
 	}
 
 	public void reload() {
