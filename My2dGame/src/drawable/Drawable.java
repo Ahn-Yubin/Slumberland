@@ -3,6 +3,7 @@ package drawable;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import physicalObject.entity.Enemy;
 import vector.Vector;
 
 public class Drawable {
@@ -12,12 +13,16 @@ public class Drawable {
 	private double width;
 	private double height;
 	
-	public Drawable(Vector position, double width, double height, Image sprite) {
+	private float alpha = 1.0f;
+	private float maxAlpha = 1.0f;
+	private float minAlpha = 0.0f;
+	
+	public Drawable(Vector position, double width, double height, Image sprite, int direction) {
 		this.setPosition(position);
-		this.setDirection(1);
 		this.setWidth(width);
 		this.setHeight(height);
 		this.setSprite(sprite);
+		this.setDirection(direction);
 	}
 	
 	public Vector getPosition() {
@@ -58,5 +63,18 @@ public class Drawable {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+	
+	public float getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(float alpha) {
+		if(alpha < 0 )
+			this.alpha = 0;
+		else if (alpha > 1)
+			this.alpha = 1;
+		else
+			this.alpha = alpha;
 	}
 }

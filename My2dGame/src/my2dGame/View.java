@@ -3,9 +3,12 @@ package my2dGame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Cursor;
 
@@ -16,6 +19,7 @@ import drawable.Drawable;
 import gui.*;
 import physicalObject.*;
 import physicalObject.bullet.Bullet;
+import physicalObject.bullet.PlayerBullet;
 import physicalObject.entity.Enemy;
 import vector.Vector;
 
@@ -57,7 +61,7 @@ public class View extends JPanel implements Runnable {
 		setVisible(true); // Show frame
 		setFocusable(true);
 		this.model = model;
-		
+
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Image image = toolkit.getImage("res/img/cursor/crosshair.png");
 		Cursor c = toolkit.createCustomCursor(image , new Point(16, 16), "img");
@@ -81,6 +85,10 @@ public class View extends JPanel implements Runnable {
 		//drawCrosshair();
 		for (Obstacle m : model.getObstacleList()) {
 			drawObject(m);
+		}
+		
+		for(Drawable d : model.getAfterImageList()) {
+			drawObject(d);
 		}
 		// ===== Ground ======
 		// Vector start = worldCorToViewCor(new Vector(0, 0));
@@ -155,10 +163,14 @@ public class View extends JPanel implements Runnable {
 		// ====================== AffineTransform ======================
 		trans.translate(view_cor.getX(), view_cor.getY()); // S3
 		trans.translate(-w * (resolutionWidth / viewWidth) / 2, -h * (resolutionHeight / viewHeight) / 2); // S2
-		trans.scale((w / sprite.getWidth(this)) * (resolutionWidth / viewWidth),
+		if(drawable.getDirection() < 0)
+			trans.translate(w* (resolutionWidth / viewWidth), 0);
+		trans.scale(drawable.getDirection()*(w / sprite.getWidth(this)) * (resolutionWidth / viewWidth),
 				(h / sprite.getHeight(this)) * (resolutionHeight / viewHeight)); // S1
 		// ============================================================
+		buffG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, drawable.getAlpha()));
 		buffG.drawImage(sprite, trans, this);
+		buffG.setComposite(AlphaComposite.SrcOver);
 	}
 	
 	public void drawObject(PhysicalObject obj) {
@@ -254,7 +266,21 @@ public class View extends JPanel implements Runnable {
 		gui.updateUiImage(this.model);
 		buffG.drawImage(gui.getUiImage(), (int) viewCor.getX(), (int) viewCor.getY(), this);
 	}
-
+	/*
+	public void drawDrawable(Drawable drawable) {
+		Vector position = drawable.getPosition();
+		Vector view_cor = worldCorToViewCor(position);
+		Image sprite = drawable.getSprite();
+		double w = drawable.getWidth();
+		double h = drawable.getHeight();
+		AffineTransform trans = new AffineTransform();
+		if(drawable.getDirection() < 0)
+			trans.translate(w* (resolutionWidth / viewWidth), 0);
+		trans.scale(drawable.getDirection()*(w / sprite.getWidth(this)) * (resolutionWidth / viewWidth),
+				(h / sprite.getHeight(this)) * (resolutionHeight / viewHeight)); // S1
+		buffG.drawImage(sprite, trans, this);
+	}
+	*/
 	public void setViewPosition(Vector position) {
 		this.viewPosition = position;
 	}

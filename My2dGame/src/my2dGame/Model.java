@@ -28,6 +28,8 @@ public class Model {
 	
 	private List<Obstacle> obstacleList;
 
+	private List<Drawable> afterImageList;
+	
 	public Model() {
 	}
 
@@ -41,7 +43,9 @@ public class Model {
 		this.playerBulletList = new CopyOnWriteArrayList<PlayerBullet>();
 		this.enemyBulletList = new CopyOnWriteArrayList<EnemyBullet>();
 		
-		this.setBackground(new Drawable(new Vector(1000, 1000), 8000, 5000, Toolkit.getDefaultToolkit().getImage("res/img/background2.png")));
+		setAfterImageList(new CopyOnWriteArrayList<Drawable>());
+		
+		this.setBackground(new Drawable(new Vector(1000, 1000), 8000, 5000, Toolkit.getDefaultToolkit().getImage("res/img/background2.png"), 1));
 		setBackgroundInitialPosition(new Vector(playerInitialPosition.getX() - 2000, playerInitialPosition.getY() - 1000).add(new Vector(background.getWidth()/2, background.getHeight()/2)));
 
 		this.enemyList = new CopyOnWriteArrayList<Enemy>();
@@ -200,5 +204,13 @@ public class Model {
 
 	public void setBackgroundInitialPosition(Vector backgroundInitialPosition) {
 		this.backgroundInitialPosition = backgroundInitialPosition;
+	}
+
+	public List<Drawable> getAfterImageList() {
+		return afterImageList;
+	}
+
+	public void setAfterImageList(List<Drawable> afterImageList) {
+		this.afterImageList = afterImageList;
 	}
 }
