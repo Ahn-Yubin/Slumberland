@@ -12,7 +12,7 @@ public abstract class PhysicalObject{
 	private Vector speed;
 	private Vector acceleration;
 	
-	private Vector direction; 
+	private Vector angle; 
 	
 	private Image sprite;
 	
@@ -27,7 +27,7 @@ public abstract class PhysicalObject{
 		this.setPosition(new Vector(0, 0));     // m
 		this.setSpeed(new Vector(0, 0));        // m/s
 		this.setAcceleration(new Vector(0, 0)); // m/s^2
-		this.setDirection(new Vector(1, 0));
+		this.setAngle(new Vector(1, 0));
 		this.setMass(1.0);
 	}
 	
@@ -75,12 +75,12 @@ public abstract class PhysicalObject{
 		this.acceleration = this.acceleration.add(v);
 	}
 
-	public Vector getDirection() {
-		return direction;
+	public Vector getAngle() {
+		return angle;
 	}
 
-	public void setDirection(Vector direction) {
-		this.direction = direction;
+	public void setAngle(Vector direction) {
+		this.angle = direction;
 	}
 	
 	public double getWidth() {

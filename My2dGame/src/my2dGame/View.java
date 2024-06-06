@@ -34,7 +34,8 @@ public class View extends JPanel implements Runnable {
     private SpeedometerGUI speedometerGUI = new SpeedometerGUI(120, 30);
     private WeaponGUI weaponGUI = new WeaponGUI(150, 30);
     private DetailedHPGUI detailedHPGUI = new DetailedHPGUI(110, 30);
-	
+    private BossHPBarGUI bossHPBarGUI = new BossHPBarGUI(1000, 50);
+    
 	private Image buffImg;
 	private Graphics2D buffG;
 
@@ -48,6 +49,8 @@ public class View extends JPanel implements Runnable {
 	private int mouseX;
 	private int mouseY;
 
+	private boolean isBossStage = false;
+	
 	public View(Model model) {
 		// Settings for the panel.
 		setSize(resolutionWidth, resolutionHeight); // Set the size of the panel.
@@ -94,7 +97,9 @@ public class View extends JPanel implements Runnable {
         drawGUI(speedometerGUI, new Vector(resolutionWidth/2 + 35, resolutionHeight - 170));
         drawGUI(weaponGUI, new Vector(resolutionWidth/2 + 200, resolutionHeight -145));
         drawGUI(detailedHPGUI, new Vector(resolutionWidth/2 - 130, resolutionHeight - 145));
-		
+        if(isBossStage)
+        	drawGUI(bossHPBarGUI, new Vector(resolutionWidth/2 , 50));
+        
 		// buffG.drawString("" + (int)(model.getPlayer().getAcceleration().size()/980 +
 		// 1) + "G", mouseX, mouseY);
 
@@ -166,7 +171,7 @@ public class View extends JPanel implements Runnable {
 		AffineTransform trans = new AffineTransform();
 		// ====================== AffineTransform ======================
 		trans.translate(view_cor.getX(), view_cor.getY()); // S4
-		trans.rotate(obj.getDirection().getX(), -obj.getDirection().getY()); // S3
+		trans.rotate(obj.getAngle().getX(), -obj.getAngle().getY()); // S3
 		trans.translate(-w * (resolutionWidth / viewWidth) / 2, -h * (resolutionHeight / viewHeight) / 2); // S2
 		trans.scale((w / sprite.getWidth(this)) * (resolutionWidth / viewWidth),
 				(h / sprite.getHeight(this)) * (resolutionHeight / viewHeight)); // S1
@@ -318,5 +323,13 @@ public class View extends JPanel implements Runnable {
 		} catch (NullPointerException e) {
 		}
 		return this.mouseY;
+	}
+
+	public boolean isBossStage() {
+		return isBossStage;
+	}
+
+	public void setBossStage(boolean isBossStage) {
+		this.isBossStage = isBossStage;
 	}
 }

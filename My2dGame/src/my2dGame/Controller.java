@@ -58,10 +58,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				jetpack();
 				move(model.getPlayer());
 				
-				System.out.println(model.getBossMissileList().size());
-				
 				//model.getMap().setPosition(model.getPlayer().getPosition());
-				System.out.println(model.getPlayer().getPosition() + " " + model.getBackground().getPosition());
 				model.getBackground().setPosition(model.getBackgroundInitialPosition().add(model.getPlayer().getPosition().sub(model.getPlayerInitialPosition()).mul(0.8)));
 				
 				for(Enemy e : model.getEnemyList()) {
@@ -79,7 +76,7 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 				
 				for(PlayerBullet pb : model.getPlayerBulletList()) {
 					move(pb);
-					pb.setDirection(pb.getSpeed().unit());
+					pb.setAngle(pb.getSpeed().unit());
 					for(Enemy e : model.getEnemyList())
 						collisionEffect(pb, e);
 					for(Obstacle o : model.getObstacleList())
@@ -104,15 +101,15 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 					for(PlayerBullet pb : model.getPlayerBulletList())
 						collisionEffect(bm, pb);
 				}
-
+				
 				if(model.getEnemyList().size() == 0) {
 					model.bossStage();
+					view.setBossStage(true);
 				}
 				
 				view.setViewPosition(model.getPlayer().getPosition().sub(new Vector(view.getViewWidth()/2, view.getViewHeight()/2))); // Let the View tracks Player
 				
 				view.repaint();
-				
 				Thread.sleep((int)(1000*dt));
 			}
 		} catch (InterruptedException e) {
@@ -152,10 +149,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		if(e.getKeyCode() == KeyEvent.VK_R && !model.getPlayer().getWeapon().isReloading()) {
 			model.getPlayer().getWeapon().settingAmmo();
 		}
-		if(e.getKeyCode() == KeyEvent.VK_H) {
-			System.out.println("bosssss");
-			model.bossStage();
-		}
 	}
 
 	@Override
@@ -164,6 +157,11 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		if(e.getKeyCode() == KeyEvent.VK_SPACE && spaceBar == true) { // If space released
 			spaceBar = false;
 		}
+		/*
+		if(e.getKeyCode() == KeyEvent.VK_H) {
+			model.bossStage();
+		}
+		*/
 	}
 
 	@Override

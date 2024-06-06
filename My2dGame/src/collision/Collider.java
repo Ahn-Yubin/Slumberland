@@ -17,8 +17,8 @@ public class Collider{
 	}
 	
 	public Vector[] getRotatedNormal(){
-		double cos = this.includedObject.getDirection().getX()/this.includedObject.getDirection().size();
-		double sin = this.includedObject.getDirection().getY()/this.includedObject.getDirection().size();
+		double cos = this.includedObject.getAngle().getX()/this.includedObject.getAngle().size();
+		double sin = this.includedObject.getAngle().getY()/this.includedObject.getAngle().size();
 		
 		Vector rotatedNormalX = new Vector(cos*this.getWidth()/2, sin*this.getWidth()/2);
 		Vector rotatedNormalY = new Vector(-sin*this.getHeight()/2, cos*this.getHeight()/2);

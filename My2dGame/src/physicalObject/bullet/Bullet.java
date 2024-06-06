@@ -10,7 +10,7 @@ public abstract class Bullet extends PhysicalObject {
 		this.setPosition(r);
 		this.setSpeed(v);
 		this.setAcceleration(new Vector());
-		this.setDirection(this.getSpeed().unit());
+		this.setAngle(this.getSpeed().unit());
 		this.setWidth(64);
 		this.setHeight(14);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
