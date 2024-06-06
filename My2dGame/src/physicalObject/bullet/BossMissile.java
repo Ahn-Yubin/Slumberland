@@ -26,8 +26,8 @@ public class BossMissile extends Bullet {
 		new Thread() {
 			public void run() {
 				try {
+					Thread.sleep(1000);
 					while (true) {
-						System.out.println(getSpeed().size());
 						Vector dp = target.getPosition().sub(getPosition());
 						Vector spd = getSpeed();
 						
@@ -36,7 +36,7 @@ public class BossMissile extends Bullet {
 						double tracingPerformence = 2 * spd.size() * ((cross > 0) ? 1 : -1);
 						Vector dv = new Vector(spd.getY(), -spd.getX()).unit().mul(tracingPerformence);
 						setAcceleration(dv);
-						setDirection(getSpeed());
+						setAngle(getSpeed());
 						Thread.sleep(6);
 					}
 				} catch (InterruptedException e) {

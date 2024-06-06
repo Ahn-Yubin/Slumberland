@@ -31,7 +31,7 @@ public class Enemy extends Entity {
 		this.setWidth(250);
 		this.setHeight(225);
 		this.setCollider(new Collider(this, this.getWidth(), this.getHeight()));
-		this.attackBoundary = 700;
+		this.attackBoundary = 900;
 		this.leftMovementRestrictions = this.getPosition().getX() - 300;
 		this.rightMovementRestrictions = this.getPosition().getX() + 300;
 		this.moveDir = Math.random() > 0.5 ? 1 : -1;
