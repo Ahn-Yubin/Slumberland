@@ -1,0 +1,21 @@
+package drawable;
+
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import vector.Vector;
+
+public class BulletEffect extends Drawable{
+
+	public BulletEffect(Vector position, double width, double height, Vector angle, int direction) {
+		super();
+		this.setPosition(position);
+		this.setWidth(width);
+		this.setHeight(height);
+		this.setAngle(angle);
+		this.setDirection(direction);
+		this.setSprite(Toolkit.getDefaultToolkit().getImage("res/img/bullet/fireeffect.png"));
+		// TODO Auto-generated constructor stub
+	}
+
+}
