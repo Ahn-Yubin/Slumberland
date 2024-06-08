@@ -3,7 +3,10 @@ package my2dGame;
 import java.awt.event.*;
 
 import collision.Collision;
+import drawable.BulletEffect;
 import drawable.Drawable;
+import drawable.MissileEffect;
+import drawable.PlayerBulletEffect;
 import physicalObject.*;
 import physicalObject.bullet.BossMissile;
 import physicalObject.bullet.EnemyBullet;
@@ -59,7 +62,6 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 					model.getPlayer().getSpeed().setX(0);
 				}
 				
-				System.out.println(model.getPlayer().getDirection());
 				playerDirectionControll();
 
 				//model.getMap().setPosition(model.getPlayer().getPosition());
@@ -365,7 +367,8 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 						for(int i=0; i<20; i++) {
 							if(i% 3 == 1) {
 								Drawable afterImage = new Drawable(model.getPlayer().getPosition(), model.getPlayer().getWidth(),
-										model.getPlayer().getHeight(), model.getPlayer().getSprite(), model.getPlayer().getDirection());
+										model.getPlayer().getHeight(), model.getPlayer().getSprite(), model.getPlayer().getDirection(),
+										model.getPlayer().getAngle());
 								model.getAfterImageList().add(afterImage);
 								System.out.println(model.getPlayer().getPosition());
 								afterImageAlphaControl(afterImage);
@@ -434,6 +437,10 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		Collision coll = Collision.collisionTest(pB.getCollider(), e.getCollider());
 		if(coll.isCollision()) {
 			e.setHp(e.getHp() - model.getPlayer().getWeapon().getAttackDamage());
+			Drawable afterImage = new PlayerBulletEffect(pB.getPosition(), 100,
+					100, pB.getAngle().mul(-1), 1);
+			model.getAfterImageList().add(afterImage);
+			afterImageAlphaControl(afterImage);
 			model.getPlayerBulletList().remove(pB);
 		}
 	}
@@ -441,6 +448,10 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void collisionEffect(PlayerBullet pB, Obstacle o) {
 		Collision coll = Collision.collisionTest(pB.getCollider(), o.getCollider());
 		if(coll.isCollision()) {
+			Drawable afterImage = new PlayerBulletEffect(pB.getPosition(), 100,
+					100, pB.getAngle().mul(-1), 1);
+			model.getAfterImageList().add(afterImage);
+			afterImageAlphaControl(afterImage);
 			model.getPlayerBulletList().remove(pB);
 		}
 	}
@@ -449,6 +460,10 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 		Collision coll = Collision.collisionTest(eB.getCollider(), p.getCollider());
 		if(coll.isCollision()) {
 			p.setHp(p.getHp() - eB.getDamage());
+			Drawable afterImage = new BulletEffect(eB.getPosition(), 100,
+					100, eB.getAngle().mul(-1), 1);
+			model.getAfterImageList().add(afterImage);
+			afterImageAlphaControl(afterImage);
 			model.getEnemyBulletList().remove(eB);
 		}
 	}
@@ -456,13 +471,21 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void collisionEffect(EnemyBullet eB, Obstacle o) {
 		Collision coll = Collision.collisionTest(eB.getCollider(), o.getCollider());
 		if(coll.isCollision()) {
+			Drawable afterImage = new BulletEffect(eB.getPosition(), 100,
+					100, eB.getAngle().mul(-1), 1);
+			model.getAfterImageList().add(afterImage);
+			afterImageAlphaControl(afterImage);
 			model.getEnemyBulletList().remove(eB);
 		}
 	}
 
 	public void collisionEffect(EnemyBullet eB, PlayerBullet pB) {
 		Collision coll = Collision.collisionTest(eB.getCollider(), pB.getCollider());
-		if(coll.isCollision()) {
+		if(coll.isCollision()) {	
+			Drawable afterImage = new BulletEffect(eB.getPosition(), 100,
+					100, eB.getAngle().mul(-1), 1);
+			model.getAfterImageList().add(afterImage);
+			afterImageAlphaControl(afterImage);
 			model.getEnemyBulletList().remove(eB);
 		}	
 	}
@@ -470,6 +493,10 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void collisionEffect(BossMissile bM, Player p) {
 		Collision coll = Collision.collisionTest(bM.getCollider(), p.getCollider());
 		if(coll.isCollision()) {
+			Drawable afterImage = new MissileEffect(bM.getPosition(), 500,
+					500, bM.getAngle().mul(-1), 1);
+			model.getAfterImageList().add(afterImage);
+			afterImageAlphaControl(afterImage);
 			p.setHp(p.getHp() - bM.getDamage());
 			model.getBossMissileList().remove(bM);
 		}
@@ -478,6 +505,10 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void collisionEffect(BossMissile bM, Obstacle o) {
 		Collision coll = Collision.collisionTest(bM.getCollider(), o.getCollider());
 		if(coll.isCollision()) {
+			Drawable afterImage = new MissileEffect(bM.getPosition(), 500,
+					500, bM.getAngle().mul(-1), 1);
+			model.getAfterImageList().add(afterImage);
+			afterImageAlphaControl(afterImage);
 			model.getBossMissileList().remove(bM);
 		}
 	}
@@ -485,6 +516,10 @@ public class Controller implements KeyListener, MouseListener, Runnable{
 	public void collisionEffect(BossMissile bM, PlayerBullet pB) {
 		Collision coll = Collision.collisionTest(bM.getCollider(), pB.getCollider());
 		if(coll.isCollision()) {
+			Drawable afterImage = new PlayerBulletEffect(pB.getPosition(), 100,
+					100, pB.getAngle().mul(-1), 1);
+			model.getAfterImageList().add(afterImage);
+			afterImageAlphaControl(afterImage);
 			model.getPlayerBulletList().remove(pB);
 		}
 	}

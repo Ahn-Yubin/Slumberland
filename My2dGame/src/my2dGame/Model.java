@@ -49,7 +49,7 @@ public class Model {
 		setAfterImageList(new CopyOnWriteArrayList<Drawable>());
 
 		this.setBackground(new Drawable(new Vector(1000, 1000), 8000, 2500,
-				Toolkit.getDefaultToolkit().getImage("res/img/background.png"), 1));
+				Toolkit.getDefaultToolkit().getImage("res/img/background.png"), 1, new Vector(1, 0)));
 		setBackgroundInitialPosition(
 				new Vector(playerInitialPosition.getX() - 2000, playerInitialPosition.getY() - 1000)
 						.add(new Vector(background.getWidth() / 2, background.getHeight() / 2)));

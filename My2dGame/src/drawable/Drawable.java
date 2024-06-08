@@ -9,15 +9,21 @@ public class Drawable {
 	private int direction;
 	private double width;
 	private double height;
+	private Vector angle;
 	
 	private float alpha = 1.0f;
 	
-	public Drawable(Vector position, double width, double height, Image sprite, int direction) {
+	public Drawable() {
+		
+	}
+	
+	public Drawable(Vector position, double width, double height, Image sprite, int direction, Vector angle) {
 		this.setPosition(position);
 		this.setWidth(width);
 		this.setHeight(height);
 		this.setSprite(sprite);
 		this.setDirection(direction);
+		this.setAngle(angle);
 	}
 	
 	public Vector getPosition() {
@@ -71,5 +77,13 @@ public class Drawable {
 			this.alpha = 1;
 		else
 			this.alpha = alpha;
+	}
+
+	public Vector getAngle() {
+		return angle;
+	}
+
+	public void setAngle(Vector angle) {
+		this.angle = angle;
 	}
 }
