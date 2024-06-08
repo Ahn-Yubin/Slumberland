@@ -3,8 +3,10 @@ package physicalObject.entity;
 import my2dGame.Model;
 import physicalObject.bullet.EnemyBullet;
 
+import java.awt.Image;
 import java.awt.Toolkit;
 import collision.Collider;
+import drawable.Drawable;
 import vector.Vector;
 
 public class Enemy extends Entity {
@@ -75,6 +77,18 @@ public class Enemy extends Entity {
 				if(Math.random() > 0.5)
 					model.getPlayer().setHp(model.getPlayer().getHp() + 10);
 				model.getEnemyList().remove(getThis());
+				Drawable afterImage = new Drawable(getPosition(), getWidth(), getHeight(), getSprite(), getDirection(), new Vector(0, -1));
+				model.getAfterImageList().add(afterImage);
+				while(afterImage.getAlpha() > 0) {
+					afterImage.setAlpha((float)(afterImage.getAlpha() - 0.1));
+					try {
+						Thread.sleep(30);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				model.getAfterImageList().remove(afterImage);
 			}
 		}.start();
 	}

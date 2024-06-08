@@ -18,6 +18,7 @@ import java.awt.FontFormatException;
 
 import javax.swing.JPanel;
 
+import drawable.BulletEffect;
 import drawable.Drawable;
 import gui.*;
 import physicalObject.*;
@@ -184,6 +185,7 @@ public class View extends JPanel implements Runnable {
 		AffineTransform trans = new AffineTransform();
 		// ====================== AffineTransform ======================
 		trans.translate(view_cor.getX(), view_cor.getY()); // S3
+		trans.rotate(drawable.getAngle().getX(), -drawable.getAngle().getY()); // S3
 		trans.translate(-w * (resolutionWidth / viewWidth) / 2, -h * (resolutionHeight / viewHeight) / 2); // S2
 		if (drawable.getDirection() < 0)
 			trans.translate(w * (resolutionWidth / viewWidth), 0);
@@ -194,7 +196,7 @@ public class View extends JPanel implements Runnable {
 		buffG.drawImage(sprite, trans, this);
 		buffG.setComposite(AlphaComposite.SrcOver);
 	}
-
+	
 	public void drawObject(PhysicalObject obj) {
 		Vector position = obj.getPosition();
 		Image sprite = obj.getSprite();
